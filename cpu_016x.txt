@@ -1,0 +1,56 @@
+                                      hits          tmin          tmax          tavg          tstd  tfrac grain pemin pemax
+Total runtime                            1     64.115387     64.115395     64.115387      0.000003  1.000     0     0    15
+Initialization                           1      0.282182      0.282423      0.282203      0.000057  0.004     0     0    15
+Main loop                                1     62.884777     62.884781     62.884777      0.000001  0.981     0     0    15
+Termination                              1      0.946292      0.946352      0.946297      0.000014  0.015     0     0    15
+Ocean Initialization                     2      0.279459      0.284172      0.279786      0.001133  0.004    11     0    15
+Ocean                                   19     62.028652     62.029034     62.028728      0.000083  0.967     1     0    15
+Ocean dynamics                         304     58.024673     58.025051     58.024899      0.000104  0.905    11     0    15
+Ocean thermodynamics and tracers       228      0.196479      0.201087      0.199112      0.001320  0.003    11     0    15
+Ocean grid generation and remapp         0      0.000000      0.000000      0.000000      0.000000  0.000    11     0    15
+Ocean Other                            342      3.078145      3.106199      3.096750      0.008422  0.048    11     0    15
+(Ocean tracer advection)               152      0.131165      0.133448      0.132627      0.000625  0.002    21     0    15
+(Ocean adiabatic driver)                76      0.064524      0.067342      0.065902      0.000884  0.001    21     0    15
+(Ocean continuity equation *)            0      0.000000      0.000000      0.000000      0.000000  0.000    31     0    15
+(Ocean set BBL viscosity)               76      0.258145      0.298987      0.281451      0.011322  0.004    31     0    15
+(Ocean message passing *)               95      0.325732      0.412986      0.372819      0.025183  0.006    31     0    15
+(Ocean MOM_initialize_state)             2      0.010423      0.011876      0.010687      0.000330  0.000    31     0    15
+(Ocean init message passing *)           2      0.002675      0.004271      0.003338      0.000529  0.000    41     0    15
+(Ocean mixed layer restrat)              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0    15
+(Ocean collective diagnostics)         323      3.039403      3.067879      3.058360      0.008559  0.048    31     0    15
+(Ocean Z-space diagnostics)              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0    15
+(Ocean ALE)                              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0    15
+(Stochastic EOS)                       152      0.000021      0.000033      0.000026      0.000003  0.000    31     0    15
+(SGS Temperature Variance)             152      0.000009      0.000020      0.000010      0.000003  0.000    31     0    15
+(Ocean diagnostics framework)          608      4.842397      4.976172      4.910728      0.039306  0.077    31     0    15
+(Ocean diagnostics remapping)            0      0.000000      0.000000      0.000000      0.000000  0.000    41     0    15
+(Ocean diagnostics grid updates)       533      0.186337      0.199083      0.193070      0.003604  0.003    41     0    15
+(Ocean init message passing)             4      0.006576      0.009503      0.008002      0.000932  0.000    41     0    15
+(Ocean continuity reconstruction       914      2.984982      3.677314      3.410989      0.165561  0.053    41     0    15
+(Ocean continuity update)              914      1.143274      1.309450      1.221665      0.045119  0.019    41     0    15
+(Ocean continuity correction)          914     13.389635     14.955527     14.416109      0.462471  0.225    41     0    15
+(Ocean BT pre-calcs only)             1216      4.931100      5.182699      5.076005      0.059311  0.079    41     0    15
+(Ocean BT pre-step halo updates)      1216      0.141405      0.170087      0.155333      0.008877  0.002    41     0    15
+(Ocean BT stepping calcs only)         608      0.105142      0.111513      0.109236      0.001893  0.002    41     0    15
+(Ocean BT stepping halo updates)       304      0.012063      0.017446      0.014692      0.001770  0.000    41     0    15
+(Ocean BT post-calcs only)             912      0.494396      0.514537      0.503666      0.005506  0.008    41     0    15
+(Ocean BT post-step halo updates       608      0.018838      0.028353      0.023541      0.003047  0.000    41     0    15
+(Ocean BT global synch)                  0      0.000000      0.000000      0.000000      0.000000  0.000    41     0    15
+(Ocean Coriolis & mom advection)       304      1.523973      1.561572      1.541507      0.009439  0.024    31     0    15
+(Ocean continuity equation)            456     20.233923     20.383833     20.320337      0.036244  0.317    31     0    15
+(Ocean pressure force)                 152      2.988131      3.119871      3.078357      0.037925  0.048    31     0    15
+(Ocean vertical viscosity)             456     14.095685     14.454494     14.285559      0.101373  0.223    31     0    15
+(Ocean horizontal viscosity)           152      1.116919      1.121878      1.119064      0.001379  0.017    31     0    15
+(Ocean momentum increments)            304      1.349131      1.385359      1.372595      0.012009  0.021    31     0    15
+(Ocean message passing)               1368      2.405727      3.712467      3.056751      0.392880  0.048    31     0    15
+(Ocean barotropic mode calc)           304      0.131998      0.183539      0.147081      0.015400  0.002    31     0    15
+(Ocean barotropic mode stepping)       304      6.053820      6.070377      6.061106      0.004533  0.095    31     0    15
+(Ocean barotropic forcing calc)        304      1.539532      1.566283      1.554754      0.008260  0.024    31     0    15
+(Ocean advect tracer)                    0      0.000000      0.000000      0.000000      0.000000  0.000    31     0    15
+(Ocean tracer halo updates)              0      0.000000      0.000000      0.000000      0.000000  0.000    41     0    15
+(Ocean tracer global synch)              0      0.000000      0.000000      0.000000      0.000000  0.000    41     0    15
+(Ocean diffuse tracer)                   0      0.000000      0.000000      0.000000      0.000000  0.000    31     0    15
+(Ocean epipycnal diffuse tracer)         0      0.000000      0.000000      0.000000      0.000000  0.000    31     0    15
+(Ocean surface forcing)                 20      0.001328      0.002068      0.001417      0.000170  0.000    31     0    15
+(Ocean forcing diagnostics)             38      0.000192      0.000236      0.000213      0.000011  0.000    41     0    15
+ MPP_STACK high water mark=           0
