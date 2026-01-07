@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
+CPU_cores = 64
+
 # Read files
 
 platforms = ('cpu', 'gpu',)
@@ -13,11 +15,11 @@ platforms = ('cpu', 'gpu',)
 
 regions = [
     '(Ocean Coriolis & mom advection)',
+    '(Ocean barotropic mode stepping)',
+    '(Ocean continuity equation)',
+    '(Ocean horizontal viscosity)',
     '(Ocean pressure force)',
     '(Ocean vertical viscosity)',
-    '(Ocean horizontal viscosity)',
-    '(Ocean continuity equation)',
-    '(Ocean barotropic mode stepping)',
 ]
 
 plotcolor = {
@@ -38,17 +40,27 @@ for expt in platforms:
     #   We invert to `platform: region: resolution: timing`
     #   But we may want `platform: region: timing: resolution`
 
+    # NOTE: extension doesn't matter; `.out` or `.txt` are OK
     for runfile in data_files:
         resolution = runfile.split('_')[1].split('.')[0].lstrip('0')
 
         metrics = {}
         with open(runfile) as stats_file:
-            # Extract headers from first line
-            # TODO: Allow full stdout as input
-            header = stats_file.readline()
-            keys = header.split()
+             
+            for line in stats_file:
+                if not line.strip().startswith('hits'):
+                    continue
+
+                keys = line.split()
+                break
 
             for line in stats_file:
+
+                # Skip blank lines
+                if not line.strip():
+                    continue
+
+                # Skip any trailing output
                 if line.strip().startswith('MPP_STACK high water mark'):
                     continue
 
@@ -73,25 +85,31 @@ for expt in platforms:
             stats[expt] = metrics
 
 # Plot results
-fig, axes = plt.subplots(2, 3, figsize=(12,8))
+fig, axes = plt.subplots(2, 3, figsize=(14,8))
 
 fig.suptitle('Runtime per step for MOM6 modules')
+fig.tight_layout(pad=2.0)
 
 # Denote the CPU core limit
 for ax in axes.flat:
-    ax.axvline(64, linestyle="--")
+    ax.axvline(CPU_cores, linestyle="--")
 
 for expt in platforms:
     for reg, ax in zip(regions, axes.flat):
 
+        # Fetch metric keys
         nx_keys = stats[expt][reg].keys()
         nx = [int(k.rstrip('x')) for k in nx_keys]
+
+        # Re-sort from 1x to max
+        nx_keys = [x for _, x in sorted(zip(nx, nx_keys))]
+        nx.sort()
 
         tmin = np.array([stats[expt][reg][nx]['tmin'] for nx in nx_keys])
         tmax = np.array([stats[expt][reg][nx]['tmax'] for nx in nx_keys])
         tavg = np.array([stats[expt][reg][nx]['tavg'] for nx in nx_keys])
 
-        hits = np.array([stats[expt][reg][nx]['hits'] for nx in nx_keys])
+        hits = np.array([stats[expt]['Ocean dynamics'][nx]['hits'] for nx in nx_keys]) / 2.
 
         ax.set_title(reg)
 
@@ -99,7 +117,6 @@ for expt in platforms:
         ax.set_xscale('log')
         ax.xaxis.set_major_locator(mticker.FixedLocator(nx))
         ax.xaxis.set_minor_locator(mticker.NullLocator())
-
         ax.set_xticklabels(nx_keys)
 
         ax.grid(True, linestyle=':', linewidth=0.5, alpha=1.0)
@@ -120,6 +137,10 @@ for expt in platforms:
             ax.set_ylim([0.0, 0.06])
         if reg == '(Ocean barotropic mode stepping)':
             ax.set_ylim([0.0, 0.03])
+
+# Force origin in plots
+for ax in axes.flat:
+    ax.set_ylim([0, None])
 
 axes[0,0].legend()
 
