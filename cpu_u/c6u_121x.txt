@@ -1,0 +1,277 @@
+WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+WARNING:
+WARNING: Module Deprecated: Will be removed on 02 February 2026
+WARNING:
+WARNING: This module, "fre/bronx-22" is deprecated and will be removed on 02 February 2026.
+WARNING:
+WARNING: Please update your script(s) and/or XML(s) to use a current version of this
+WARNING: module.
+WARNING:
+WARNING: For assistance, please submit a GFDL help desk ticket.
+WARNING:
+WARNING:
+WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+
+
+Lmod is automatically replacing "intel/2025.2" with "intel-classic/2023.2.0".
+
+cpu-bind=MAP  - c6n0770, task  0  0 [282854]: mask 0x1 set
+cpu-bind=MAP  - c6n0770, task  1  1 [282855]: mask 0x2 set
+cpu-bind=MAP  - c6n0770, task  2  2 [282856]: mask 0x4 set
+cpu-bind=MAP  - c6n0770, task  3  3 [282857]: mask 0x8 set
+cpu-bind=MAP  - c6n0770, task  4  4 [282858]: mask 0x10 set
+cpu-bind=MAP  - c6n0770, task  5  5 [282859]: mask 0x20 set
+cpu-bind=MAP  - c6n0770, task  6  6 [282860]: mask 0x40 set
+cpu-bind=MAP  - c6n0770, task  7  7 [282861]: mask 0x80 set
+cpu-bind=MAP  - c6n0770, task  8  8 [282862]: mask 0x100 set
+cpu-bind=MAP  - c6n0770, task  9  9 [282863]: mask 0x200 set
+cpu-bind=MAP  - c6n0770, task 10 10 [282864]: mask 0x400 set
+cpu-bind=MAP  - c6n0770, task 11 11 [282865]: mask 0x800 set
+cpu-bind=MAP  - c6n0770, task 12 12 [282866]: mask 0x1000 set
+cpu-bind=MAP  - c6n0770, task 13 13 [282867]: mask 0x2000 set
+cpu-bind=MAP  - c6n0770, task 14 14 [282868]: mask 0x4000 set
+cpu-bind=MAP  - c6n0770, task 15 15 [282869]: mask 0x8000 set
+cpu-bind=MAP  - c6n0770, task 16 16 [282870]: mask 0x10000 set
+cpu-bind=MAP  - c6n0770, task 17 17 [282871]: mask 0x20000 set
+cpu-bind=MAP  - c6n0770, task 18 18 [282872]: mask 0x40000 set
+cpu-bind=MAP  - c6n0770, task 19 19 [282873]: mask 0x80000 set
+cpu-bind=MAP  - c6n0770, task 20 20 [282874]: mask 0x100000 set
+cpu-bind=MAP  - c6n0770, task 21 21 [282875]: mask 0x200000 set
+cpu-bind=MAP  - c6n0770, task 22 22 [282876]: mask 0x400000 set
+cpu-bind=MAP  - c6n0770, task 23 23 [282877]: mask 0x800000 set
+cpu-bind=MAP  - c6n0770, task 24 24 [282878]: mask 0x1000000 set
+cpu-bind=MAP  - c6n0770, task 25 25 [282879]: mask 0x2000000 set
+cpu-bind=MAP  - c6n0770, task 26 26 [282880]: mask 0x4000000 set
+cpu-bind=MAP  - c6n0770, task 27 27 [282881]: mask 0x8000000 set
+cpu-bind=MAP  - c6n0770, task 28 28 [282882]: mask 0x10000000 set
+cpu-bind=MAP  - c6n0770, task 29 29 [282883]: mask 0x20000000 set
+cpu-bind=MAP  - c6n0770, task 30 30 [282884]: mask 0x40000000 set
+cpu-bind=MAP  - c6n0770, task 31 31 [282885]: mask 0x80000000 set
+cpu-bind=MAP  - c6n0770, task 32 32 [282886]: mask 0x100000000 set
+cpu-bind=MAP  - c6n0770, task 33 33 [282887]: mask 0x200000000 set
+cpu-bind=MAP  - c6n0770, task 34 34 [282888]: mask 0x400000000 set
+cpu-bind=MAP  - c6n0770, task 35 35 [282889]: mask 0x800000000 set
+cpu-bind=MAP  - c6n0770, task 36 36 [282890]: mask 0x1000000000 set
+cpu-bind=MAP  - c6n0770, task 37 37 [282891]: mask 0x2000000000 set
+cpu-bind=MAP  - c6n0770, task 38 38 [282892]: mask 0x4000000000 set
+cpu-bind=MAP  - c6n0770, task 39 39 [282893]: mask 0x8000000000 set
+cpu-bind=MAP  - c6n0770, task 40 40 [282894]: mask 0x10000000000 set
+cpu-bind=MAP  - c6n0770, task 41 41 [282895]: mask 0x20000000000 set
+cpu-bind=MAP  - c6n0770, task 42 42 [282896]: mask 0x40000000000 set
+cpu-bind=MAP  - c6n0770, task 43 43 [282897]: mask 0x80000000000 set
+cpu-bind=MAP  - c6n0770, task 44 44 [282898]: mask 0x100000000000 set
+cpu-bind=MAP  - c6n0770, task 45 45 [282899]: mask 0x200000000000 set
+cpu-bind=MAP  - c6n0770, task 46 46 [282900]: mask 0x400000000000 set
+cpu-bind=MAP  - c6n0770, task 47 47 [282901]: mask 0x800000000000 set
+cpu-bind=MAP  - c6n0770, task 48 48 [282902]: mask 0x1000000000000 set
+cpu-bind=MAP  - c6n0770, task 49 49 [282903]: mask 0x2000000000000 set
+cpu-bind=MAP  - c6n0770, task 50 50 [282904]: mask 0x4000000000000 set
+cpu-bind=MAP  - c6n0770, task 51 51 [282905]: mask 0x8000000000000 set
+cpu-bind=MAP  - c6n0770, task 52 52 [282906]: mask 0x10000000000000 set
+cpu-bind=MAP  - c6n0770, task 53 53 [282907]: mask 0x20000000000000 set
+cpu-bind=MAP  - c6n0770, task 54 54 [282908]: mask 0x40000000000000 set
+cpu-bind=MAP  - c6n0770, task 55 55 [282909]: mask 0x80000000000000 set
+cpu-bind=MAP  - c6n0770, task 56 56 [282910]: mask 0x100000000000000 set
+cpu-bind=MAP  - c6n0770, task 57 57 [282911]: mask 0x200000000000000 set
+cpu-bind=MAP  - c6n0770, task 58 58 [282912]: mask 0x400000000000000 set
+cpu-bind=MAP  - c6n0770, task 59 59 [282913]: mask 0x800000000000000 set
+cpu-bind=MAP  - c6n0770, task 60 60 [282914]: mask 0x1000000000000000 set
+cpu-bind=MAP  - c6n0770, task 61 61 [282915]: mask 0x2000000000000000 set
+cpu-bind=MAP  - c6n0770, task 62 62 [282916]: mask 0x4000000000000000 set
+cpu-bind=MAP  - c6n0770, task 63 63 [282917]: mask 0x8000000000000000 set
+cpu-bind=MAP  - c6n0770, task 64 64 [282918]: mask 0x10000000000000000 set
+cpu-bind=MAP  - c6n0770, task 65 65 [282919]: mask 0x20000000000000000 set
+cpu-bind=MAP  - c6n0770, task 66 66 [282920]: mask 0x40000000000000000 set
+cpu-bind=MAP  - c6n0770, task 67 67 [282921]: mask 0x80000000000000000 set
+cpu-bind=MAP  - c6n0770, task 68 68 [282922]: mask 0x100000000000000000 set
+cpu-bind=MAP  - c6n0770, task 69 69 [282923]: mask 0x200000000000000000 set
+cpu-bind=MAP  - c6n0770, task 70 70 [282924]: mask 0x400000000000000000 set
+cpu-bind=MAP  - c6n0770, task 71 71 [282925]: mask 0x800000000000000000 set
+cpu-bind=MAP  - c6n0770, task 72 72 [282926]: mask 0x1000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 73 73 [282927]: mask 0x2000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 74 74 [282928]: mask 0x4000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 75 75 [282929]: mask 0x8000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 76 76 [282930]: mask 0x10000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 77 77 [282931]: mask 0x20000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 78 78 [282932]: mask 0x40000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 79 79 [282933]: mask 0x80000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 80 80 [282934]: mask 0x100000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 81 81 [282935]: mask 0x200000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 82 82 [282936]: mask 0x400000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 83 83 [282937]: mask 0x800000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 84 84 [282938]: mask 0x1000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 85 85 [282939]: mask 0x2000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 86 86 [282940]: mask 0x4000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 87 87 [282941]: mask 0x8000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 88 88 [282942]: mask 0x10000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 89 89 [282943]: mask 0x20000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 90 90 [282944]: mask 0x40000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 91 91 [282945]: mask 0x80000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 92 92 [282946]: mask 0x100000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 93 93 [282947]: mask 0x200000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 94 94 [282948]: mask 0x400000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 95 95 [282949]: mask 0x800000000000000000000000 set
+cpu-bind=MAP  - c6n0770, task 96 96 [282950]: mask 0x1 set
+cpu-bind=MAP  - c6n0770, task 97 97 [282951]: mask 0x2 set
+cpu-bind=MAP  - c6n0770, task 98 98 [282952]: mask 0x4 set
+cpu-bind=MAP  - c6n0770, task 99 99 [282953]: mask 0x8 set
+cpu-bind=MAP  - c6n0770, task 100 100 [282954]: mask 0x10 set
+cpu-bind=MAP  - c6n0770, task 101 101 [282955]: mask 0x20 set
+cpu-bind=MAP  - c6n0770, task 102 102 [282956]: mask 0x40 set
+cpu-bind=MAP  - c6n0770, task 103 103 [282957]: mask 0x80 set
+cpu-bind=MAP  - c6n0770, task 104 104 [282958]: mask 0x100 set
+cpu-bind=MAP  - c6n0770, task 105 105 [282959]: mask 0x200 set
+cpu-bind=MAP  - c6n0770, task 106 106 [282960]: mask 0x400 set
+cpu-bind=MAP  - c6n0770, task 107 107 [282961]: mask 0x800 set
+cpu-bind=MAP  - c6n0770, task 108 108 [282962]: mask 0x1000 set
+cpu-bind=MAP  - c6n0770, task 109 109 [282963]: mask 0x2000 set
+cpu-bind=MAP  - c6n0770, task 110 110 [282964]: mask 0x4000 set
+cpu-bind=MAP  - c6n0770, task 111 111 [282965]: mask 0x8000 set
+cpu-bind=MAP  - c6n0770, task 112 112 [282966]: mask 0x10000 set
+cpu-bind=MAP  - c6n0770, task 113 113 [282967]: mask 0x20000 set
+cpu-bind=MAP  - c6n0770, task 114 114 [282968]: mask 0x40000 set
+cpu-bind=MAP  - c6n0770, task 115 115 [282969]: mask 0x80000 set
+cpu-bind=MAP  - c6n0770, task 116 116 [282970]: mask 0x100000 set
+cpu-bind=MAP  - c6n0770, task 117 117 [282971]: mask 0x200000 set
+cpu-bind=MAP  - c6n0770, task 118 118 [282972]: mask 0x400000 set
+cpu-bind=MAP  - c6n0770, task 119 119 [282973]: mask 0x800000 set
+cpu-bind=MAP  - c6n0770, task 120 120 [282974]: mask 0x1000000 set
+NOTE from PE     0: MPP_DOMAINS_SET_STACK_SIZE: stack size set to    32768.
+NOTE from PE     0: MPP_DOMAINS_SET_STACK_SIZE: stack size set to   320000.
+NOTE from PE     0: ======== Model being driven by MOM_driver ========
+NOTE from PE     0: callTree: o Program MOM_main, MOM_driver.F90
+NOTE from PE     0: open_param_file: MOM_input has been opened successfully.
+NOTE from PE     0: open_param_file: MOM_override has been opened successfully.
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+  Y-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+ MOM_inc domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+  Y-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+NOTE from PE     0: diag_manager_mod::diag_manager_init: prepend_date only supported when diag_manager_init is called with time_init present.
+NOTE from PE     0: diag_manager_mod::diag_manager_init: You are using the legacy version of the diag table
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+  Y-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+  Y-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+  Y-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+  Y-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+
+WARNING from PE     0: Open_file is appending .nc to the filename ./ocean_geometry
+
+
+WARNING from PE     0: Open_file is appending .nc to the filename ./ocean_geometry
+
+
+WARNING from PE     0: MOM_file_parser : COORD_CONFIG over-ridden.  Line: 'COORD_CONFIG = "linear"' in file MOM_override.
+
+
+WARNING from PE     0: MOM_file_parser : COORD_CONFIG over-ridden.  Line: 'COORD_CONFIG = "linear"' in file MOM_override.
+
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+  Y-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+  Y-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+  Y-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+  Y-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+NOTE from PE     0: depth_list_setup: ./Depth_list.nc does not exist.  Creating a new file.
+
+WARNING from PE     0: Unused line in MOM_input : GINT = 0.0098
+
+
+WARNING from PE     0: Unused line in MOM_input : GINT = 0.0098
+
+MOM Day       0.000      0: En 9.167541E-12, MaxCFL  0.00000, Mass 5.286434400187E+18
+    Total Energy: 41871BF78E9C7625  4.8463601826397218E+07
+    Total Mass:   5.2864344001866383E+18, Change:   0.0000000000000000E+00 Error:  0.00000E+00 ( 0.0E+00)
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+  Y-AXIS =   32  32  32  32  32  32  32  32  32  32  32
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+  Y-AXIS =   16  16  16  16  16  16  16  16  16  16  16
+                               Memuse(MB) at Memory HiWaterMark=  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+ MPP_DOMAINS_STACK high water mark=      275200
+
+Tabulating mpp_clock statistics across    121 PEs...
+
+                                      hits          tmin          tmax          tavg          tstd  tfrac grain pemin pemax
+Total runtime                            1    490.159851    490.179993    490.162476      0.005559  1.000     0     0   120
+Initialization                           1      4.032533      4.060405      4.036568      0.006156  0.008     0     0   120
+Main loop                                1    482.877472    483.008179    482.930695      0.031099  0.985     0     0   120
+Termination                              1      2.843585      2.962552      2.917842      0.030887  0.006     0     0   120
+Ocean Initialization                     2      4.367368      4.494892      4.438925      0.032533  0.009    11     0   120
+Ocean                                   33    482.389099    482.515564    482.445312      0.030254  0.984     1     0   120
+Ocean dynamics                        1452    480.281708    480.736389    480.522430      0.087469  0.980    11     0   120
+Ocean thermodynamics and tracers        99      0.004391      0.071838      0.012131      0.009822  0.000    11     0   120
+Ocean grid generation and remapp         0      0.000000      0.000000      0.000000      0.000000  0.000    11     0   120
+Ocean Other                            858      0.590598      0.971280      0.815765      0.081609  0.002    11     0   120
+(Ocean tracer advection)                66      0.002882      0.036448      0.007554      0.006224  0.000    21     0   120
+(Ocean adiabatic driver)                33      0.001488      0.050837      0.004550      0.006974  0.000    21     0   120
+(Ocean continuity equation *)            0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Ocean set BBL viscosity)               33      0.042688      0.148957      0.060306      0.015510  0.000    31     0   120
+(Ocean message passing *)               66      1.445032      1.873086      1.650620      0.090114  0.003    31     0   120
+(Ocean MOM_initialize_state)             2      0.007647      0.124042      0.044598      0.023399  0.000    31     0   120
+(Ocean init message passing *)           2      0.000870      0.033417      0.018976      0.012357  0.000    41     0   120
+(Ocean mixed layer restrat)              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Ocean collective diagnostics)         825      0.005040      0.063318      0.010393      0.008982  0.000    31     0   120
+(Ocean Z-space diagnostics)              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Ocean ALE)                              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Stochastic EOS)                       726      0.000038      0.016139      0.000250      0.001452  0.000    31     0   120
+(SGS Temperature Variance)             726      0.000028      0.000045      0.000029      0.000002  0.000    31     0   120
+(Ocean diagnostics framework)            0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Ocean diagnostics remapping)            0      0.000000      0.000000      0.000000      0.000000  0.000    41     0   120
+(Ocean diagnostics grid updates)      2212      0.086556      0.403906      0.217440      0.081339  0.000    41     0   120
+(Ocean init message passing)             4      0.004920      0.095136      0.060456      0.023938  0.000    41     0   120
+(Ocean continuity reconstruction      4358      2.612188      7.291317      4.568299      0.952981  0.009    41     0   120
+(Ocean continuity update)             4358      0.819298      2.932700      1.680136      0.692751  0.003    41     0   120
+(Ocean continuity correction)         4358     16.788725     33.351669     23.258802      5.733915  0.047    41     0   120
+(Ocean BT pre-calcs only)             5808      6.693378     13.695652      9.306546      2.415212  0.019    41     0   120
+(Ocean BT pre-step halo updates)      5808    142.398102    203.085800    167.526764     20.945351  0.342    41     0   120
+(Ocean BT stepping calcs only)        2904      0.145282      0.203164      0.170136      0.012887  0.000    41     0   120
+(Ocean BT stepping halo updates)      1452     21.673964     25.657331     23.259256      0.756454  0.047    41     0   120
+(Ocean BT post-calcs only)            4356      1.647630      2.115458      1.805544      0.116783  0.004    41     0   120
+(Ocean BT post-step halo updates      2904     55.942558     59.425838     57.533283      0.663282  0.117    41     0   120
+(Ocean BT global synch)                  0      0.000000      0.000000      0.000000      0.000000  0.000    41     0   120
+(Ocean Coriolis & mom advection)      1452      2.940980      5.201894      3.823327      0.784432  0.008    31     0   120
+(Ocean continuity equation)           2178     20.405634     42.066273     29.509436      7.156537  0.060    31     0   120
+(Ocean pressure force)                 726      1.951168      5.707735      3.886638      1.185080  0.008    31     0   120
+(Ocean vertical viscosity)            2178     17.544334     35.893612     24.449709      7.172701  0.050    31     0   120
+(Ocean horizontal viscosity)           726      4.897179      7.958420      5.952107      1.129100  0.012    31     0   120
+(Ocean momentum increments)           1452      0.706764      1.879036      1.309177      0.238592  0.003    31     0   120
+(Ocean message passing)               6534    125.658371    170.947510    147.623093     12.561048  0.301    31     0   120
+(Ocean barotropic mode calc)          1452      0.151231      0.334866      0.202835      0.038741  0.000    31     0   120
+(Ocean barotropic mode stepping)      1452    236.742477    293.401245    259.613464     19.187355  0.530    31     0   120
+(Ocean barotropic forcing calc)       1452      0.725445      2.158679      1.444006      0.417487  0.003    31     0   120
+(Ocean advect tracer)                    0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Ocean tracer halo updates)              0      0.000000      0.000000      0.000000      0.000000  0.000    41     0   120
+(Ocean tracer global synch)              0      0.000000      0.000000      0.000000      0.000000  0.000    41     0   120
+(Ocean diffuse tracer)                   0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Ocean epipycnal diffuse tracer)         0      0.000000      0.000000      0.000000      0.000000  0.000    31     0   120
+(Ocean surface forcing)                 34      0.000659      0.016750      0.001988      0.003396  0.000    31     0   120
+(Ocean forcing diagnostics)             66      0.000091      0.016128      0.000263      0.001448  0.000    41     0   120
+ MPP_STACK high water mark=           0
