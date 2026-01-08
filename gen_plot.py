@@ -6,12 +6,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-CPU_cores = 64
+CPU_cores = 96
 
 # Read files
 
-platforms = ('cpu', 'gpu',)
-#platforms = ('gpu',)
+#platforms = ('h100', 'a100', )
+#platforms = ('h100', 'a100', 'cpu_u',)
+platforms = ('h100', 'a100', 'cpu_u', 'cpu_m')
+#platforms = ('h100', 'a100', 'cpu_u', 'cpu_m', 'cpu_0')
+
 
 regions = [
     '(Ocean Coriolis & mom advection)',
@@ -23,13 +26,30 @@ regions = [
 ]
 
 plotcolor = {
-    'gpu': 'orange',
-    'cpu': 'blue',
+    'h100': 'orange',
+    'a100': 'green',
+    'cpu_m': 'blue',
+    'cpu_u': 'red',
+    'cpu_0': 'black',
 }
 
+# TODO: loop this
 run_files = {}
-run_files['cpu'] = [run for run in os.listdir() if run.startswith('cpu_')]
-run_files['gpu'] = [run for run in os.listdir() if run.startswith('gpu_')]
+run_files['h100'] = [
+        os.path.join('h100', run) for run in os.listdir('h100') if run.startswith('h100_')
+]
+run_files['a100'] = [
+        os.path.join('a100', run) for run in os.listdir('a100') if run.startswith('a100_')
+]
+run_files['cpu_u'] = [
+        os.path.join('cpu_u', run) for run in os.listdir('cpu_u') if run.startswith('c6u_')
+]
+run_files['cpu_m'] = [
+        os.path.join('cpu_m', run) for run in os.listdir('cpu_m') if run.startswith('cpu2_')
+]
+run_files['cpu_0'] = [
+        os.path.join('cpu_0', run) for run in os.listdir('cpu_0') if run.startswith('cpu0_')
+]
 
 stats = {}
 
@@ -42,7 +62,7 @@ for expt in platforms:
 
     # NOTE: extension doesn't matter; `.out` or `.txt` are OK
     for runfile in data_files:
-        resolution = runfile.split('_')[1].split('.')[0].lstrip('0')
+        resolution = runfile.rsplit('_', 1)[1].split('.')[0].lstrip('0')
 
         metrics = {}
         with open(runfile) as stats_file:
@@ -125,18 +145,18 @@ for expt in platforms:
             label=expt.upper() + " tavg")
         ax.plot(nx, tmax / hits, '--', color=plotcolor[expt],
             label=expt.upper() + " tmax")
-        ax.plot(nx, tmin / hits, ':', color=plotcolor[expt],
-            label=expt.upper() + " tmin")
+        #ax.plot(nx, tmin / hits, ':', color=plotcolor[expt],
+        #    label=expt.upper() + " tmin")
 
         ax.plot(nx, tavg / hits, 'o', color=plotcolor[expt])
         ax.plot(nx, tmax / hits, 'o', color=plotcolor[expt])
-        ax.plot(nx, tmin / hits, 'o', color=plotcolor[expt])
+        #ax.plot(nx, tmin / hits, 'o', color=plotcolor[expt])
 
         # Adjust ranges
         if reg == '(Ocean continuity equation)':
-            ax.set_ylim([0.0, 0.06])
+            ax.set_ylim([0.0, 0.10])
         if reg == '(Ocean barotropic mode stepping)':
-            ax.set_ylim([0.0, 0.03])
+            ax.set_ylim([0.0, 0.05])
 
 # Force origin in plots
 for ax in axes.flat:
