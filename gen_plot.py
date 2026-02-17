@@ -16,12 +16,15 @@ force_origin = False
 #platforms = ('h100', 'a100', 'cpu_u', 'cpu_m')
 #platforms = ('h100', 'a100', 'cpu_u', 'cpu_m', 'cpu_0')
 #platforms = ('cpu_m', 'bbl_cpu', 'bbl_gpu')
-platforms = ('h100', 'a100', 'gh200')
+#platforms = ('h100', 'a100', 'gh200')
 #platforms = ('cpu_m', 'a100', 'h100')
 #platforms = ('mpi_pe1', 'mpi_pe2', 'mpi_pe4', 'mpi_pe8')
+#platforms = ('h100', 'nv26p1')
+#platforms = ('h100', 'a100', 'cpu_m')
+platforms = ('pe1_new', 'pe2_new', 'pe4_new', 'pe8_new')
 
 
-# Standard modules
+## Standard modules
 #regions = [
 #    '(Ocean Coriolis & mom advection)',
 #    '(Ocean barotropic mode stepping)',
@@ -56,6 +59,13 @@ plotcolor = {
     'mpi_pe2': 'green',
     'mpi_pe4': 'red',
     'mpi_pe8': 'blue',
+    #
+    'pe1_new': 'orange',
+    'pe2_new': 'green',
+    'pe4_new': 'red',
+    'pe8_new': 'blue',
+    #
+    'nv26p1': 'green'
 }
 
 legend_labels = {
@@ -68,11 +78,26 @@ legend_labels = {
     'cpu_0': 'CPU (ref)',
     'bbl_cpu': 'CPU (BBL PR)',
     'bbl_gpu': 'GPU (BBL PR)',
-    'mpi_pe1': '1 PE',
-    'mpi_pe2': '2 PEs',
-    'mpi_pe4': '4 PEs',
-    'mpi_pe8': '8 PEs',
+    #'mpi_pe1': '1 GPU',
+    #'mpi_pe2': '2 GPU',
+    #'mpi_pe4': '4 GPU',
+    #'mpi_pe8': '8 GPU',
+    'pe1_new': '1 GPU',
+    'pe2_new': '2 GPU',
+    'pe4_new': '4 GPU',
+    'pe8_new': '8 GPU',
+    #
+    #'h100': 'nvhpc 25.11',
+    'nv26p1': 'nvhpc 26.1'
 }
+
+
+# Custom ranges
+plt_yrange = {
+#    '(Ocean continuity equation)': [0.0, 100.],
+#    '(Ocean barotropic mode stepping)': [0.0, 30.],
+}
+
 
 run_files = {
     expt: [
@@ -137,8 +162,9 @@ for expt in platforms:
 # Plot results
 fig, axes = plt.subplots(2, 3, figsize=(14, 8))
 
-fig.suptitle(f'Runtime per step for MOM6 modules')
-fig.tight_layout(pad=2.0)
+fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 1024×1024')
+#fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
+fig.tight_layout(pad=2.0, h_pad=3.0)
 
 # Denote the CPU core limit
 for ax in axes.flat:
@@ -155,9 +181,9 @@ for expt in platforms:
         nx_keys = [x for _, x in sorted(zip(nx, nx_keys))]
         nx.sort()
 
-        tmin = np.array([stats[expt][reg][nx]['tmin'] for nx in nx_keys])
-        tmax = np.array([stats[expt][reg][nx]['tmax'] for nx in nx_keys])
-        tavg = np.array([stats[expt][reg][nx]['tavg'] for nx in nx_keys])
+        tmin = 1000*np.array([stats[expt][reg][nx]['tmin'] for nx in nx_keys])
+        tmax = 1000*np.array([stats[expt][reg][nx]['tmax'] for nx in nx_keys])
+        tavg = 1000*np.array([stats[expt][reg][nx]['tavg'] for nx in nx_keys])
 
         # There are two clocks per dycore loop, but this could change.
         hits = np.array(
@@ -170,7 +196,10 @@ for expt in platforms:
         ax.set_xscale('log')
         ax.xaxis.set_major_locator(mticker.FixedLocator(nx))
         ax.xaxis.set_minor_locator(mticker.NullLocator())
-        ax.set_xticklabels([f"{nx}x" for nx in nx_keys])
+        ax.set_xticklabels([f"{nx}x" for nx in nx_keys], rotation=45)
+
+        # Optional?
+        #ax.set_yscale('log')
 
         ax.grid(True, linestyle=':', linewidth=0.5, alpha=1.0)
 
@@ -185,11 +214,8 @@ for expt in platforms:
         ax.plot(nx, tmax / hits, 'o', color=plotcolor[expt], alpha=0.4)
         #ax.plot(nx, tmin / hits, 'o', color=plotcolor[expt])
 
-        ## Adjust ranges
-        #if reg == '(Ocean continuity equation)':
-        #    ax.set_ylim([0.0, 0.10])
-        #if reg == '(Ocean barotropic mode stepping)':
-        #    ax.set_ylim([0.0, 0.05])
+        if reg in plt_yrange:
+            ax.set_ylim(plt_yrange[reg])
 
 #axes[1,2].set_ylim([0.0, 0.008])
 
