@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
 CPU_cores = 96
+#CPU_cores = 0
 force_origin = False
 
 # Read files
@@ -21,28 +22,29 @@ force_origin = False
 #platforms = ('mpi_pe1', 'mpi_pe2', 'mpi_pe4', 'mpi_pe8')
 #platforms = ('h100', 'nv26p1')
 #platforms = ('h100', 'a100', 'cpu_m')
-platforms = ('pe1_new', 'pe2_new', 'pe4_new', 'pe8_new')
+#platforms = ('pe1_new', 'pe2_new', 'pe4_new', 'pe8_new')
+platforms = ('cpu_m', 'pe1_new', 'cor_k')
 
 
-## Standard modules
+# Standard modules
+regions = [
+    '(Ocean Coriolis & mom advection)',
+    #'(Ocean barotropic mode stepping)',
+    #'(Ocean continuity equation)',
+    #'(Ocean horizontal viscosity)',
+    #'(Ocean pressure force)',
+    #'(Ocean vertical viscosity)',
+]
+
+## MPI scaling
 #regions = [
 #    '(Ocean Coriolis & mom advection)',
-#    '(Ocean barotropic mode stepping)',
+#    '(Ocean BT stepping calcs only)',
 #    '(Ocean continuity equation)',
-#    '(Ocean horizontal viscosity)',
+#    '(Ocean message passing)',
 #    '(Ocean pressure force)',
 #    '(Ocean vertical viscosity)',
 #]
-
-# MPI scaling
-regions = [
-    '(Ocean Coriolis & mom advection)',
-    '(Ocean BT stepping calcs only)',
-    '(Ocean continuity equation)',
-    '(Ocean message passing)',
-    '(Ocean pressure force)',
-    '(Ocean vertical viscosity)',
-]
 
 plotcolor = {
     'h100': 'orange',
@@ -65,7 +67,8 @@ plotcolor = {
     'pe4_new': 'red',
     'pe8_new': 'blue',
     #
-    'nv26p1': 'green'
+    'nv26p1': 'green',
+    'cor_k': 'green',
 }
 
 legend_labels = {
@@ -88,7 +91,9 @@ legend_labels = {
     'pe8_new': '8 GPU',
     #
     #'h100': 'nvhpc 25.11',
-    'nv26p1': 'nvhpc 26.1'
+    'nv26p1': 'nvhpc 26.1',
+    #'cor_k': 'CorAdCalc v2',
+    'cor_k': 'CorAdCalc2'
 }
 
 
@@ -159,16 +164,41 @@ for expt in platforms:
         except KeyError:
             stats[expt] = metrics
 
+# Create a square-like m x n pair
+def square_pad(k):
+    if k <= 0:
+        raise ValueError("k must be positive")
+
+    # ceil sqrt without using sqrt()
+    n = 1
+    while n * n < k:
+        n += 1
+
+    m = (k + n - 1) // n  # ceil(k/n)
+
+    if m > n:
+        m, n = n, m
+
+    return m, n
+
+nplot = len(regions)
+
+nx, ny = square_pad(nplot)
+
 # Plot results
-fig, axes = plt.subplots(2, 3, figsize=(14, 8))
+fig, axes = plt.subplots(nx, ny, figsize=(14, 8), squeeze=False)
+
+print(axes)
+print(axes.flat)
 
 fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 1024×1024')
 #fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
 fig.tight_layout(pad=2.0, h_pad=3.0)
 
 # Denote the CPU core limit
-for ax in axes.flat:
-    ax.axvline(CPU_cores, linestyle="--")
+if CPU_cores > 0:
+    for ax in axes.flat:
+        ax.axvline(CPU_cores, linestyle="--")
 
 for expt in platforms:
     for reg, ax in zip(regions, axes.flat):
@@ -200,6 +230,10 @@ for expt in platforms:
 
         # Optional?
         #ax.set_yscale('log')
+        #ax.yaxis.set_major_formatter(mticker.StrMethodFormatter('{x:g}'))
+        #ax.yaxis.set_major_locator(mticker.FixedLocator(nx))
+        #ax.yaxis.set_minor_locator(mticker.NullLocator())
+        #ax.set_yticklabels([f"{nx}" for nx in nx_keys])
 
         ax.grid(True, linestyle=':', linewidth=0.5, alpha=1.0)
 
@@ -214,8 +248,9 @@ for expt in platforms:
         ax.plot(nx, tmax / hits, 'o', color=plotcolor[expt], alpha=0.4)
         #ax.plot(nx, tmin / hits, 'o', color=plotcolor[expt])
 
-        if reg in plt_yrange:
-            ax.set_ylim(plt_yrange[reg])
+        #if reg in plt_yrange:
+        #    ax.set_ylim(plt_yrange[reg])
+
 
 #axes[1,2].set_ylim([0.0, 0.008])
 
