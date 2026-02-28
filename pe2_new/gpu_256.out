@@ -1,0 +1,195 @@
+NOTE from PE     0: MPP_DOMAINS_SET_STACK_SIZE: stack size set to    32768.
+NOTE from PE     0: MPP_DOMAINS_SET_STACK_SIZE: stack size set to  4000000.
+NOTE from PE     0: ======== Model being driven by MOM_driver ========
+NOTE from PE     0: callTree: o Program MOM_main, MOM_driver.F90
+ MOM_domains_mod OMPthreading             1            0            1
+NOTE from PE     0: fms_affinity_set: OCEAN affinity assumes hyper-threading hardware disabled
+ MOM_domains_mod OMPthreading             0            0            1
+NOTE from PE     0: open_param_file: MOM_input has been opened successfully.
+NOTE from PE     0: open_param_file: MOM_override has been opened successfully.
+ MOM_domains_mod OMPthreading             1            0            1
+
+WARNING from PE     0: MOM_file_parser : DT over-ridden.  Line: 'DT = 75' in file MOM_override.
+
+
+WARNING from PE     0: MOM_file_parser : DT_THERM over-ridden.  Line: 'DT_THERM = 150' in file MOM_override.
+
+NOTE from PE     0: fms_affinity_set: OCEAN affinity assumes hyper-threading hardware disabled
+ MOM_domains_mod OMPthreading             0            0            1
+
+WARNING from PE     0: MOM_file_parser : NIGLOBAL over-ridden.  Line: 'NIGLOBAL = 512' in file MOM_override.
+
+
+WARNING from PE     0: MOM_file_parser : NJGLOBAL over-ridden.  Line: 'NJGLOBAL = 512' in file MOM_override.
+
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_inc domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+NOTE from PE     0: diag_manager_mod::diag_manager_init: prepend_date only supported when diag_manager_init is called with time_init present.
+NOTE from PE     0: diag_manager_mod::diag_manager_init: You are using the legacy version of the diag table
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+
+WARNING from PE     0: MOM_file_parser : NK over-ridden.  Line: 'NK = 100' in file MOM_override.
+
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+
+WARNING from PE     0: Open_file is appending .nc to the filename ./ocean_geometry
+
+
+WARNING from PE     0: MOM_file_parser : COORD_CONFIG over-ridden.  Line: 'COORD_CONFIG = "linear"' in file MOM_override.
+
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+
+WARNING from PE     0: ./Depth_list.nc checksums do not match; updating file.
+
+
+WARNING from PE     0: MOM_file_parser : DT_FORCING over-ridden.  Line: 'DT_FORCING = 150' in file MOM_override.
+
+
+WARNING from PE     0: MOM_file_parser : DAYMAX over-ridden.  Line: 'DAYMAX = 150' in file MOM_override.
+
+
+WARNING from PE     0: Unused line in MOM_input : GINT = 0.0098
+
+
+WARNING from PE     0: open_ASCII_file: File ./CPU_stats opened WRITEONLY already exists!
+
+
+WARNING from PE     0: open_ASCII_file: File ./ocean.stats opened WRITEONLY already exists!
+
+MOM Time       0.000      0: En 9.167783E-12, MaxCFL  0.00000, Mass 5.286420478077E+18
+    Total Energy: 41871C1BB355D5A8  4.8464758416911423E+07
+    Total Mass:   5.2864204780768635E+18, Change:   0.0000000000000000E+00 Error:  0.00000E+00 ( 0.0E+00)
+MOM Time      50.000     50: En 3.628263E-06, MaxCFL  0.00070, Mass 5.286420478077E+18
+    Total Energy: 42B171D0738932E6  1.9180526209330898E+13
+    Total Mass:   5.2864204780768635E+18, Change:   7.1212031765190824E+00 Error:  7.12120E+00 ( 1.3E-18)
+MOM Time     100.000    100: En 1.302025E-05, MaxCFL  0.00126, Mass 5.286420478077E+18
+    Total Energy: 42CF4CECC7742046  6.8830500939840547E+13
+    Total Mass:   5.2864204780768635E+18, Change:   6.2132118529516145E-01 Error:  6.21321E-01 ( 1.2E-19)
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+MOM Time     150.000    150: En 2.597815E-05, MaxCFL  0.00165, Mass 5.286420478077E+18
+    Total Energy: 42DF39BDF142389B  1.3733144120752242E+14
+    Total Mass:   5.2864204780768635E+18, Change:   6.9982464594652249E-01 Error:  6.99825E-01 ( 1.3E-19)
+ MOM_in domain decomposition
+whalo =    4, ehalo =    4, shalo =    4, nhalo =    4
+  X-AXIS =  256 256
+  Y-AXIS =  512
+ MOM_in domain decomposition
+whalo =    2, ehalo =    2, shalo =    2, nhalo =    2
+  X-AXIS =  128 128
+  Y-AXIS =  256
+
+WARNING from PE     0: open_ASCII_file: File RESTART/ocean_solo.res opened WRITEONLY already exists!
+
+
+WARNING from PE     0: open_ASCII_file: File exitcode opened WRITEONLY already exists!
+
+ MPP_DOMAINS_STACK high water mark=      1024800
+
+Tabulating mpp_clock statistics across      2 PEs...
+
+                                      hits          tmin          tmax          tavg          tstd  tfrac grain pemin pemax
+Total runtime                            1    105.036977    105.036977    105.036977      0.000000  1.000     0     0     1
+Initialization                           1      5.859524      5.860272      5.859898      0.000374  0.056     0     0     1
+Main loop                                1     87.784496     87.785024     87.784760      0.000264  0.836     0     0     1
+Termination                              1     11.390426     11.390624     11.390525      0.000099  0.108     0     0     1
+Ocean Initialization                     2      6.764627      6.776021      6.770324      0.005697  0.064    11     0     1
+Ocean                                   75     65.011990     65.014309     65.013149      0.001159  0.619     1     0     1
+Ocean dynamics                         300     37.371277     37.407568     37.389422      0.018146  0.356    11     0     1
+Ocean thermodynamics and tracers       225      6.096570      6.115003      6.105787      0.009216  0.058    11     0     1
+Ocean grid generation and remapp         0      0.000000      0.000000      0.000000      0.000000  0.000    11     0     1
+Ocean Other                            450     11.846159     11.995173     11.920666      0.074507  0.113    11     0     1
+(Ocean tracer advection)               150      2.169490      2.194256      2.181873      0.012383  0.021    21     0     1
+(Ocean adiabatic driver)                75      3.920618      3.926950      3.923784      0.003166  0.037    21     0     1
+(Ocean continuity equation *)            0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Ocean set BBL viscosity)               75      0.203889      0.205302      0.204596      0.000707  0.002    31     0     1
+(Ocean message passing *)              150      3.531813      3.586926      3.559370      0.027556  0.034    31     0     1
+(Ocean MOM_initialize_state)             2      0.126568      0.126599      0.126583      0.000016  0.001    31     0     1
+(Ocean init message passing *)           2      0.036648      0.039001      0.037824      0.001177  0.000    41     0     1
+(Ocean mixed layer restrat)              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Ocean collective diagnostics)         375      4.741385      4.764634      4.753010      0.011624  0.045    31     0     1
+(Ocean Z-space diagnostics)              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Ocean ALE)                              0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Stochastic EOS)                       150      0.000012      0.000013      0.000012      0.000000  0.000    31     0     1
+(SGS Temperature Variance)             150      0.000006      0.000006      0.000006      0.000000  0.000    31     0     1
+(Ocean diagnostics framework)            0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Ocean diagnostics remapping)            0      0.000000      0.000000      0.000000      0.000000  0.000    41     0     1
+(Ocean diagnostics grid updates)       526      5.135231      5.138620      5.136925      0.001694  0.049    41     0     1
+(Ocean init message passing)             4      0.112186      0.119128      0.115657      0.003471  0.001    41     0     1
+(Ocean continuity reconstruction       902      0.439790      0.440234      0.440012      0.000222  0.004    41     0     1
+(Ocean continuity update)              902      0.121109      0.122694      0.121902      0.000792  0.001    41     0     1
+(Ocean continuity correction)          902      3.714122      3.825899      3.770010      0.055889  0.036    41     0     1
+(Ocean BT pre-calcs only)             1200      0.627194      0.627858      0.627526      0.000332  0.006    41     0     1
+(Ocean BT pre-step halo updates)      1200      0.737145      1.128882      0.933013      0.195868  0.009    41     0     1
+(Ocean BT stepping calcs only)         600      0.272359      0.280110      0.276234      0.003876  0.003    41     0     1
+(Ocean BT stepping halo updates)       300      0.072175      0.073723      0.072949      0.000774  0.001    41     0     1
+(Ocean BT post-calcs only)             900      0.107647      0.108205      0.107926      0.000279  0.001    41     0     1
+(Ocean BT post-step halo updates       600      0.145788      0.153554      0.149671      0.003883  0.001    41     0     1
+(Ocean BT global synch)                  0      0.000000      0.000000      0.000000      0.000000  0.000    41     0     1
+(Ocean Coriolis & mom advection)       300      4.947387      5.225318      5.086353      0.138965  0.048    31     0     1
+(Ocean continuity equation)            450      4.350587      4.459435      4.405011      0.054424  0.042    31     0     1
+(Ocean pressure force)                 150      1.194556      1.237385      1.215970      0.021414  0.012    31     0     1
+(Ocean vertical viscosity)             450      4.753302      4.803267      4.778284      0.024983  0.045    31     0     1
+(Ocean horizontal viscosity)           150      4.530140      4.764591      4.647366      0.117225  0.044    31     0     1
+(Ocean momentum increments)            300      0.089940      0.090418      0.090179      0.000239  0.001    31     0     1
+(Ocean message passing)               1350      1.330478      1.340035      1.335257      0.004779  0.013    31     0     1
+(Ocean barotropic mode calc)           300      0.027131      0.027336      0.027233      0.000102  0.000    31     0     1
+(Ocean barotropic mode stepping)       300      2.134261      2.529639      2.331950      0.197689  0.022    31     0     1
+(Ocean barotropic forcing calc)        300      0.095834      0.095973      0.095904      0.000070  0.001    31     0     1
+(Ocean advect tracer)                    0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Ocean tracer halo updates)              0      0.000000      0.000000      0.000000      0.000000  0.000    41     0     1
+(Ocean tracer global synch)              0      0.000000      0.000000      0.000000      0.000000  0.000    41     0     1
+(Ocean diffuse tracer)                   0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Ocean epipycnal diffuse tracer)         0      0.000000      0.000000      0.000000      0.000000  0.000    31     0     1
+(Ocean surface forcing)                 76      0.010195      0.010302      0.010248      0.000054  0.000    31     0     1
+(Ocean forcing diagnostics)            150      0.000184      0.000269      0.000226      0.000042  0.000    41     0     1
+ MPP_STACK high water mark=            0

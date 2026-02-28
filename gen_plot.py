@@ -29,11 +29,11 @@ platforms = ('cpu_m', 'pe1_new', 'cor_k')
 # Standard modules
 regions = [
     '(Ocean Coriolis & mom advection)',
-    #'(Ocean barotropic mode stepping)',
-    #'(Ocean continuity equation)',
-    #'(Ocean horizontal viscosity)',
-    #'(Ocean pressure force)',
-    #'(Ocean vertical viscosity)',
+    '(Ocean barotropic mode stepping)',
+    '(Ocean continuity equation)',
+    '(Ocean horizontal viscosity)',
+    '(Ocean pressure force)',
+    '(Ocean vertical viscosity)',
 ]
 
 ## MPI scaling
@@ -103,67 +103,6 @@ plt_yrange = {
 #    '(Ocean barotropic mode stepping)': [0.0, 30.],
 }
 
-
-run_files = {
-    expt: [
-        os.path.join(expt, run)
-        for run in os.listdir(expt)
-        if run.endswith('.out') or run.endswith('.txt')
-    ]
-    for expt in platforms
-}
-
-stats = {}
-
-for expt in platforms:
-    data_files = run_files[expt]
-
-    # NOTE: File is `(platform, resolution): region: timing`
-    #   We invert to `platform: region: resolution: timing`
-    #   But we may want `platform: region: timing: resolution`
-
-    # NOTE: extension doesn't matter; `.out` or `.txt` are OK
-    for runfile in data_files:
-        resolution = runfile.rsplit('_', 1)[1].split('.')[0].lstrip('0')
-
-        metrics = {}
-        with open(runfile) as stats_file:
-            for line in stats_file:
-                if not line.strip().startswith('hits'):
-                    continue
-
-                keys = line.split()
-                break
-
-            for line in stats_file:
-                # Skip blank lines
-                if not line.strip():
-                    continue
-
-                # Skip any trailing output
-                if line.strip().startswith('MPP_STACK high water mark'):
-                    continue
-
-                rec = line.rsplit(maxsplit=len(keys))
-
-                clk = rec[0]
-                try:
-                    metrics[clk][resolution] = {}
-                except KeyError:
-                    metrics[clk] = {}
-                    metrics[clk][resolution] = {}
-
-                for stat, value in zip(keys, rec[1:]):
-                    metrics[clk][resolution][stat] = float(value)
-
-        # Poor man's deepupdate()
-        # Assumes that all levels exist if `expt` exists.
-        try:
-            for reg in metrics:
-                stats[expt][reg].update(metrics[reg])
-        except KeyError:
-            stats[expt] = metrics
-
 # Create a square-like m x n pair
 def square_pad(k):
     if k <= 0:
@@ -181,85 +120,157 @@ def square_pad(k):
 
     return m, n
 
-nplot = len(regions)
 
-nx, ny = square_pad(nplot)
+def get_stats(platforms):
+    stats = {}
 
-# Plot results
-fig, axes = plt.subplots(nx, ny, figsize=(14, 8), squeeze=False)
+    run_files = {
+        expt: [
+            os.path.join(expt, run)
+            for run in os.listdir(expt)
+            if run.endswith('.out') or run.endswith('.txt')
+        ]
+        for expt in platforms
+    }
 
-print(axes)
-print(axes.flat)
+    for expt in platforms:
+        data_files = run_files[expt]
 
-fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 1024×1024')
-#fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
-fig.tight_layout(pad=2.0, h_pad=3.0)
+        # NOTE: File is `(platform, resolution): region: timing`
+        #   We invert to `platform: region: resolution: timing`
+        #   But we may want `platform: region: timing: resolution`
 
-# Denote the CPU core limit
-if CPU_cores > 0:
-    for ax in axes.flat:
-        ax.axvline(CPU_cores, linestyle="--")
+        # NOTE: extension doesn't matter; `.out` or `.txt` are OK
+        for runfile in data_files:
+            resolution = runfile.rsplit('_', 1)[1].split('.')[0].lstrip('0')
 
-for expt in platforms:
-    for reg, ax in zip(regions, axes.flat):
+            metrics = {}
+            with open(runfile) as stats_file:
+                for line in stats_file:
+                    if not line.strip().startswith('hits'):
+                        continue
 
-        # Fetch metric keys
-        nx_keys = stats[expt][reg].keys()
-        nx = [int(k.rstrip('x')) for k in nx_keys]
+                    keys = line.split()
+                    break
 
-        # Re-sort from 1x to max
-        nx_keys = [x for _, x in sorted(zip(nx, nx_keys))]
-        nx.sort()
+                for line in stats_file:
+                    # Skip blank lines
+                    if not line.strip():
+                        continue
 
-        tmin = 1000*np.array([stats[expt][reg][nx]['tmin'] for nx in nx_keys])
-        tmax = 1000*np.array([stats[expt][reg][nx]['tmax'] for nx in nx_keys])
-        tavg = 1000*np.array([stats[expt][reg][nx]['tavg'] for nx in nx_keys])
+                    # Skip any trailing output
+                    if line.strip().startswith('MPP_STACK high water mark'):
+                        continue
 
-        # There are two clocks per dycore loop, but this could change.
-        hits = np.array(
-                [stats[expt]['Ocean dynamics'][nx]['hits'] for nx in nx_keys]
-        ) / 2.
+                    rec = line.rsplit(maxsplit=len(keys))
 
-        ax.set_title(reg)
+                    clk = rec[0]
+                    try:
+                        metrics[clk][resolution] = {}
+                    except KeyError:
+                        metrics[clk] = {}
+                        metrics[clk][resolution] = {}
 
-        # Explicit log ticks
-        ax.set_xscale('log')
-        ax.xaxis.set_major_locator(mticker.FixedLocator(nx))
-        ax.xaxis.set_minor_locator(mticker.NullLocator())
-        ax.set_xticklabels([f"{nx}x" for nx in nx_keys], rotation=45)
+                    for stat, value in zip(keys, rec[1:]):
+                        metrics[clk][resolution][stat] = float(value)
 
-        # Optional?
-        #ax.set_yscale('log')
-        #ax.yaxis.set_major_formatter(mticker.StrMethodFormatter('{x:g}'))
-        #ax.yaxis.set_major_locator(mticker.FixedLocator(nx))
-        #ax.yaxis.set_minor_locator(mticker.NullLocator())
-        #ax.set_yticklabels([f"{nx}" for nx in nx_keys])
+            # Poor man's deepupdate()
+            # Assumes that all levels exist if `expt` exists.
+            try:
+                for reg in metrics:
+                    stats[expt][reg].update(metrics[reg])
+            except KeyError:
+                stats[expt] = metrics
 
-        ax.grid(True, linestyle=':', linewidth=0.5, alpha=1.0)
-
-        ax.plot(nx, tavg / hits, '-', color=plotcolor[expt],
-                label=f"{legend_labels[expt]} (avg)")
-        ax.plot(nx, tmax / hits, '--', color=plotcolor[expt], alpha=0.4,
-                label=f"{legend_labels[expt]} (max)")
-        #ax.plot(nx, tmin / hits, ':', color=plotcolor[expt],
-        #       label=f"{legend_labels[expt]} (min)")
-
-        ax.plot(nx, tavg / hits, 'o', color=plotcolor[expt])
-        ax.plot(nx, tmax / hits, 'o', color=plotcolor[expt], alpha=0.4)
-        #ax.plot(nx, tmin / hits, 'o', color=plotcolor[expt])
-
-        #if reg in plt_yrange:
-        #    ax.set_ylim(plt_yrange[reg])
+    return stats
 
 
-#axes[1,2].set_ylim([0.0, 0.008])
+def plot_results(regions, stats):
+    nplot = len(regions)
+    nx, ny = square_pad(nplot)
 
-# Force origin in plots
-# Per-plot?
-if force_origin:
-    for ax in axes.flat:
-        ax.set_ylim([0, None])
+    # Plot results
+    fig, axes = plt.subplots(nx, ny, figsize=(14, 8), squeeze=False)
 
-axes[0, 0].legend()
+    fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 1024×1024')
+    #fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
+    fig.tight_layout(pad=2.0, h_pad=3.0)
 
-plt.show()
+    # Denote the CPU core limit
+    if CPU_cores > 0:
+        for ax in axes.flat:
+            ax.axvline(CPU_cores, linestyle="--")
+
+    for expt in platforms:
+        for reg, ax in zip(regions, axes.flat):
+
+            # Fetch metric keys
+            nx_keys = stats[expt][reg].keys()
+            nx = [int(k.rstrip('x')) for k in nx_keys]
+
+            # Re-sort from 1x to max
+            nx_keys = [x for _, x in sorted(zip(nx, nx_keys))]
+            nx.sort()
+
+            tmin = 1000*np.array([stats[expt][reg][nx]['tmin'] for nx in nx_keys])
+            tmax = 1000*np.array([stats[expt][reg][nx]['tmax'] for nx in nx_keys])
+            tavg = 1000*np.array([stats[expt][reg][nx]['tavg'] for nx in nx_keys])
+
+            # There are two clocks per dycore loop, but this could change.
+            hits = np.array(
+                    [stats[expt]['Ocean dynamics'][nx]['hits'] for nx in nx_keys]
+            ) / 2.
+
+            ax.set_title(reg)
+
+            # Explicit log ticks
+            ax.set_xscale('log')
+            ax.xaxis.set_major_locator(mticker.FixedLocator(nx))
+            ax.xaxis.set_minor_locator(mticker.NullLocator())
+            ax.set_xticklabels([f"{nx}x" for nx in nx_keys], rotation=45)
+
+            # Optional?
+            #ax.set_yscale('log')
+            #ax.yaxis.set_major_formatter(mticker.StrMethodFormatter('{x:g}'))
+            #ax.yaxis.set_major_locator(mticker.FixedLocator(nx))
+            #ax.yaxis.set_minor_locator(mticker.NullLocator())
+            #ax.set_yticklabels([f"{nx}" for nx in nx_keys])
+
+            ax.grid(True, linestyle=':', linewidth=0.5, alpha=1.0)
+
+            ax.plot(nx, tavg / hits, '-', color=plotcolor[expt],
+                    label=f"{legend_labels[expt]} (avg)")
+            ax.plot(nx, tmax / hits, '--', color=plotcolor[expt], alpha=0.4,
+                    label=f"{legend_labels[expt]} (max)")
+            #ax.plot(nx, tmin / hits, ':', color=plotcolor[expt],
+            #       label=f"{legend_labels[expt]} (min)")
+
+            ax.plot(nx, tavg / hits, 'o', color=plotcolor[expt])
+            ax.plot(nx, tmax / hits, 'o', color=plotcolor[expt], alpha=0.4)
+            #ax.plot(nx, tmin / hits, 'o', color=plotcolor[expt])
+
+            #if reg in plt_yrange:
+            #    ax.set_ylim(plt_yrange[reg])
+
+
+    #axes[1,2].set_ylim([0.0, 0.008])
+
+    # Force origin in plots
+    # Per-plot?
+    if force_origin:
+        for ax in axes.flat:
+            ax.set_ylim([0, None])
+
+    axes[0, 0].legend()
+
+    plt.show()
+
+
+def main():
+    stats = get_stats(platforms)
+
+    plot_results(regions, stats)
+
+
+if __name__ == '__main__':
+    main()
