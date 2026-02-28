@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -9,21 +11,6 @@ import matplotlib.ticker as mticker
 CPU_cores = 96
 #CPU_cores = 0
 force_origin = False
-
-# Read files
-
-#platforms = ('h100', 'a100', )
-#platforms = ('h100', 'a100', 'cpu_u',)
-#platforms = ('h100', 'a100', 'cpu_u', 'cpu_m')
-#platforms = ('h100', 'a100', 'cpu_u', 'cpu_m', 'cpu_0')
-#platforms = ('cpu_m', 'bbl_cpu', 'bbl_gpu')
-#platforms = ('h100', 'a100', 'gh200')
-#platforms = ('cpu_m', 'a100', 'h100')
-#platforms = ('mpi_pe1', 'mpi_pe2', 'mpi_pe4', 'mpi_pe8')
-#platforms = ('h100', 'nv26p1')
-#platforms = ('h100', 'a100', 'cpu_m')
-#platforms = ('pe1_new', 'pe2_new', 'pe4_new', 'pe8_new')
-platforms = ('cpu_m', 'pe1_new', 'cor_k')
 
 
 # Standard modules
@@ -185,7 +172,7 @@ def get_stats(platforms):
     return stats
 
 
-def plot_results(regions, stats):
+def plot_results(platforms, regions, stats):
     nplot = len(regions)
     nx, ny = square_pad(nplot)
 
@@ -267,9 +254,12 @@ def plot_results(regions, stats):
 
 
 def main():
-    stats = get_stats(platforms)
+    p = argparse.ArgumentParser()
+    p.add_argument("platforms", nargs="+", help="Platform directories, e.g. a100 h100")
+    args = p.parse_args()
 
-    plot_results(regions, stats)
+    stats = get_stats(args.platforms)
+    plot_results(args.platforms, regions, stats)
 
 
 if __name__ == '__main__':
