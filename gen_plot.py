@@ -33,30 +33,6 @@ regions = [
 #    '(Ocean vertical viscosity)',
 #]
 
-plotcolor = {
-    'h100': 'orange',
-    'a100': 'green',
-    'cpu_m': 'blue',
-    'cpu_u': 'red',
-    'cpu_0': 'black',
-    # bleh
-    'bbl_cpu': 'orange',
-    'bbl_gpu': 'green',
-    'gh200': 'red',
-    # bleh
-    'mpi_pe1': 'orange',
-    'mpi_pe2': 'green',
-    'mpi_pe4': 'red',
-    'mpi_pe8': 'blue',
-    #
-    'pe1_new': 'orange',
-    'pe2_new': 'green',
-    'pe4_new': 'red',
-    'pe8_new': 'blue',
-    #
-    'nv26p1': 'green',
-    'cor_k': 'green',
-}
 
 legend_labels = {
     'h100': 'H100',
@@ -183,14 +159,15 @@ def plot_results(platforms, regions, stats):
     #fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
     fig.tight_layout(pad=2.0, h_pad=3.0)
 
+    colors = plt.cm.tab10.colors[:len(platforms)]
+
     # Denote the CPU core limit
     if CPU_cores > 0:
         for ax in axes.flat:
-            ax.axvline(CPU_cores, linestyle="--")
+            ax.axvline(CPU_cores, linestyle="--", color='black')
 
-    for expt in platforms:
+    for expt, col in zip(platforms, colors):
         for reg, ax in zip(regions, axes.flat):
-
             # Fetch metric keys
             nx_keys = stats[expt][reg].keys()
             nx = [int(k.rstrip('x')) for k in nx_keys]
@@ -225,16 +202,14 @@ def plot_results(platforms, regions, stats):
 
             ax.grid(True, linestyle=':', linewidth=0.5, alpha=1.0)
 
-            ax.plot(nx, tavg / hits, '-', color=plotcolor[expt],
-                    label=f"{legend_labels[expt]} (avg)")
-            ax.plot(nx, tmax / hits, '--', color=plotcolor[expt], alpha=0.4,
-                    label=f"{legend_labels[expt]} (max)")
-            #ax.plot(nx, tmin / hits, ':', color=plotcolor[expt],
-            #       label=f"{legend_labels[expt]} (min)")
+            if any(tavg != tmin) or any(tavg != tmax):
+                ax.fill_between(nx, tmin / hits, tmax / hits,
+                                color=col, alpha=0.15, linewidth=0)
 
-            ax.plot(nx, tavg / hits, 'o', color=plotcolor[expt])
-            ax.plot(nx, tmax / hits, 'o', color=plotcolor[expt], alpha=0.4)
-            #ax.plot(nx, tmin / hits, 'o', color=plotcolor[expt])
+            ax.plot(nx, tavg / hits, '-', color=col,
+                    label=f"{legend_labels[expt]} (avg)")
+
+            ax.plot(nx, tavg / hits, 'o', color=col)
 
             #if reg in plt_yrange:
             #    ax.set_ylim(plt_yrange[reg])
@@ -258,8 +233,10 @@ def main():
     p.add_argument("platforms", nargs="+", help="Platform directories, e.g. a100 h100")
     args = p.parse_args()
 
-    stats = get_stats(args.platforms)
-    plot_results(args.platforms, regions, stats)
+    platforms = [os.path.basename(os.path.normpath(p)) for p in args.platforms]
+
+    stats = get_stats(platforms)
+    plot_results(platforms, regions, stats)
 
 
 if __name__ == '__main__':
