@@ -150,10 +150,10 @@ def get_stats(platforms):
 
 def plot_results(platforms, regions, stats):
     nplot = len(regions)
-    nx, ny = square_pad(nplot)
+    nrow, ncol = square_pad(nplot)
 
     # Plot results
-    fig, axes = plt.subplots(nx, ny, figsize=(14, 8), squeeze=False)
+    fig, axes = plt.subplots(nrow, ncol, figsize=(14, 8), squeeze=False)
 
     fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 1024×1024')
     #fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
@@ -176,9 +176,9 @@ def plot_results(platforms, regions, stats):
             nx_keys = [x for _, x in sorted(zip(nx, nx_keys))]
             nx.sort()
 
-            tmin = 1000*np.array([stats[expt][reg][nx]['tmin'] for nx in nx_keys])
-            tmax = 1000*np.array([stats[expt][reg][nx]['tmax'] for nx in nx_keys])
-            tavg = 1000*np.array([stats[expt][reg][nx]['tavg'] for nx in nx_keys])
+            tmin = 1000. * np.array([stats[expt][reg][nx]['tmin'] for nx in nx_keys])
+            tmax = 1000. * np.array([stats[expt][reg][nx]['tmax'] for nx in nx_keys])
+            tavg = 1000. * np.array([stats[expt][reg][nx]['tavg'] for nx in nx_keys])
 
             # There are two clocks per dycore loop, but this could change.
             hits = np.array(
