@@ -11,6 +11,7 @@ import matplotlib.ticker as mticker
 CPU_cores = 96
 #CPU_cores = 0
 force_origin = False
+dark_bg = True
 
 
 # Standard modules
@@ -34,6 +35,7 @@ regions = [
 #]
 
 
+# TODO: Better as command line inputs?
 legend_labels = {
     'h100': 'H100',
     'a100': 'A100',
@@ -48,15 +50,22 @@ legend_labels = {
     #'mpi_pe2': '2 GPU',
     #'mpi_pe4': '4 GPU',
     #'mpi_pe8': '8 GPU',
-    'pe1_new': '1 GPU',
-    'pe2_new': '2 GPU',
-    'pe4_new': '4 GPU',
-    'pe8_new': '8 GPU',
+    #'pe1_new': 'GPU (H100)',
+    'pe1_new': 'GPU (H100)',
+    #'pe1_new': '1 GPU',
+    'pe2_new': 'H100 ×2',
+    'pe4_new': 'H100 ×4',
+    'pe8_new': 'H100 ×8',
     #
+    'pe1_vvlim': 'H100 + vvlim',
     #'h100': 'nvhpc 25.11',
     'nv26p1': 'nvhpc 26.1',
     #'cor_k': 'CorAdCalc v2',
-    'cor_k': 'CorAdCalc2'
+    'cor_k': 'GPU (k teams)',
+    'gaea_2s': 'CPU (Milan 64c x2)',
+    'gaea_1s': 'CPU (Milan 64c)',
+    'ursa_1s': 'CPU (Genoa 96c)',
+    'ursa_2s': 'CPU (Genoa 96c x2)',
 }
 
 
@@ -148,23 +157,31 @@ def get_stats(platforms):
     return stats
 
 
-def plot_results(platforms, regions, stats):
+def plot_results(platforms, regions, stats, output):
     nplot = len(regions)
     nrow, ncol = square_pad(nplot)
 
     # Plot results
-    fig, axes = plt.subplots(nrow, ncol, figsize=(14, 8), squeeze=False)
+    fig, axes = plt.subplots(nrow, ncol, figsize=(12, 7), squeeze=False,
+            constrained_layout=True)
 
-    fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 1024×1024')
+    if dark_bg:
+        fig.patch.set_facecolor('none')
+        ctxt = 'white'
+    else:
+        ctxt = 'black'
+
+    fig.suptitle(f'Time per step (msec) from 32×32 to 1024×1024', color=ctxt)
     #fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
-    fig.tight_layout(pad=2.0, h_pad=3.0)
 
     colors = plt.cm.tab10.colors[:len(platforms)]
 
-    # Denote the CPU core limit
+    ## Denote the CPU core limit
     if CPU_cores > 0:
         for ax in axes.flat:
-            ax.axvline(CPU_cores, linestyle="--", color='black')
+            ax.axvline(CPU_cores, linestyle="--", color=colors[0])
+            #ax.axvline(2. * CPU_cores, linestyle="--", color=colors[1])
+            #ax.axvline(96, linestyle="--", color=colors[1])
 
     for expt, col in zip(platforms, colors):
         for reg, ax in zip(regions, axes.flat):
@@ -185,7 +202,7 @@ def plot_results(platforms, regions, stats):
                     [stats[expt]['Ocean dynamics'][nx]['hits'] for nx in nx_keys]
             ) / 2.
 
-            ax.set_title(reg)
+            ax.set_title(reg, color=ctxt)
 
             # Explicit log ticks
             ax.set_xscale('log')
@@ -193,12 +210,16 @@ def plot_results(platforms, regions, stats):
             ax.xaxis.set_minor_locator(mticker.NullLocator())
             ax.set_xticklabels([f"{nx}x" for nx in nx_keys], rotation=45)
 
-            # Optional?
-            #ax.set_yscale('log')
-            #ax.yaxis.set_major_formatter(mticker.StrMethodFormatter('{x:g}'))
-            #ax.yaxis.set_major_locator(mticker.FixedLocator(nx))
-            #ax.yaxis.set_minor_locator(mticker.NullLocator())
-            #ax.set_yticklabels([f"{nx}" for nx in nx_keys])
+            ax.set_yscale('log')
+            ax.yaxis.set_major_formatter(
+                mticker.FuncFormatter(lambda v, pos: f"{v:g}")
+            )
+            ax.yaxis.set_major_locator(
+                mticker.LogLocator(base=10, subs=(1.0, 2.0, 5.0))
+            )
+            ax.yaxis.set_minor_locator(mticker.NullLocator())
+
+            ax.tick_params(colors=ctxt)
 
             ax.grid(True, linestyle=':', linewidth=0.5, alpha=1.0)
 
@@ -207,7 +228,7 @@ def plot_results(platforms, regions, stats):
                                 color=col, alpha=0.15, linewidth=0)
 
             ax.plot(nx, tavg / hits, '-', color=col,
-                    label=f"{legend_labels[expt]} (avg)")
+                    label=legend_labels[expt])
 
             ax.plot(nx, tavg / hits, 'o', color=col)
 
@@ -225,18 +246,20 @@ def plot_results(platforms, regions, stats):
 
     axes[0, 0].legend()
 
-    plt.show()
+    #plt.show()
+    plt.savefig(output)
 
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("platforms", nargs="+", help="Platform directories, e.g. a100 h100")
+    p.add_argument('platforms', nargs='+', help='Platform directories, e.g. a100 h100')
+    p.add_argument('-o', '--output', default='out.svg', metavar='FILE', help='output filename')
     args = p.parse_args()
 
     platforms = [os.path.basename(os.path.normpath(p)) for p in args.platforms]
 
     stats = get_stats(platforms)
-    plot_results(platforms, regions, stats)
+    plot_results(platforms, regions, stats, args.output)
 
 
 if __name__ == '__main__':
