@@ -170,6 +170,7 @@ def plot_results(platforms, regions, stats, output):
 
     # Plot results
     fig, axes = plt.subplots(nrow, ncol, figsize=(12, 7), squeeze=False,
+    #fig, axes = plt.subplots(nrow, ncol, figsize=(8, 4), squeeze=False,
             constrained_layout=True)
 
     if dark_bg:
@@ -181,7 +182,7 @@ def plot_results(platforms, regions, stats, output):
     fig.suptitle(f'Time per step (msec) from 32×32 to 1024×1024', color=ctxt)
     #fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
 
-    #colors = plt.cm.tab10.colors[:len(platforms)]
+    colors = plt.cm.tab10.colors[:len(platforms)]
 
     ## Denote the CPU core limit
     if CPU_cores > 0:
@@ -234,10 +235,12 @@ def plot_results(platforms, regions, stats, output):
                 ax.fill_between(nx, tmin / hits, tmax / hits,
                                 alpha=0.15, linewidth=0)
 
-            ax.plot(nx, tavg / hits, '-', color=col,
-                    label=legend_labels[expt])
+            line, = ax.plot(nx, tavg / hits, '-',
+                            label=legend_labels[expt])
 
-            ax.plot(nx, tavg / hits, 'o')
+            col = line.get_color()
+
+            ax.plot(nx, tavg / hits, 'o', color=col)
 
             #if reg in plt_yrange:
             #    ax.set_ylim(plt_yrange[reg])
