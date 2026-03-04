@@ -79,6 +79,9 @@ plt_yrange = {
 #    '(Ocean barotropic mode stepping)': [0.0, 30.],
 }
 
+
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.tab10.colors)
+
 # Create a square-like m x n pair
 def square_pad(k):
     if k <= 0:
@@ -178,7 +181,7 @@ def plot_results(platforms, regions, stats, output):
     fig.suptitle(f'Time per step (msec) from 32×32 to 1024×1024', color=ctxt)
     #fig.suptitle(f'Runtime per step (in msec) for MOM6 modules from 32×32 to 128×128')
 
-    colors = plt.cm.tab10.colors[:len(platforms)]
+    #colors = plt.cm.tab10.colors[:len(platforms)]
 
     ## Denote the CPU core limit
     if CPU_cores > 0:
@@ -187,7 +190,7 @@ def plot_results(platforms, regions, stats, output):
             #ax.axvline(2. * CPU_cores, linestyle="--", color=colors[1])
             #ax.axvline(96, linestyle="--", color=colors[1])
 
-    for expt, col in zip(platforms, colors):
+    for expt in platforms:
         for reg, ax in zip(regions, axes.flat):
             # Fetch metric keys
             nx_keys = stats[expt][reg].keys()
@@ -229,12 +232,12 @@ def plot_results(platforms, regions, stats, output):
 
             if any(tavg != tmin) or any(tavg != tmax):
                 ax.fill_between(nx, tmin / hits, tmax / hits,
-                                color=col, alpha=0.15, linewidth=0)
+                                alpha=0.15, linewidth=0)
 
             ax.plot(nx, tavg / hits, '-', color=col,
                     label=legend_labels[expt])
 
-            ax.plot(nx, tavg / hits, 'o', color=col)
+            ax.plot(nx, tavg / hits, 'o')
 
             #if reg in plt_yrange:
             #    ax.set_ylim(plt_yrange[reg])
