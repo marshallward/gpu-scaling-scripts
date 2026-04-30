@@ -11,7 +11,8 @@ import matplotlib.ticker as mticker
 CPU_cores = 96
 #CPU_cores = 0
 force_origin = False
-dark_bg = True
+dark_bg = False
+use_log_plot = False
 
 
 # Standard modules
@@ -22,6 +23,10 @@ regions = [
     '(Ocean horizontal viscosity)',
     '(Ocean pressure force)',
     '(Ocean vertical viscosity)',
+    #
+    #'Ocean dynamics',
+    #'Main loop',
+    #'Ocean Other',
 ]
 
 ## MPI scaling
@@ -40,6 +45,7 @@ legend_labels = {
     'h100': 'H100',
     'a100': 'A100',
     'gh200': 'GH200',
+    'gh200_v2': 'GH200',
 
     'cpu_m': 'CPU (MW)',
     'cpu_u': 'CPU (UW)',
@@ -50,13 +56,13 @@ legend_labels = {
     #'mpi_pe2': '2 GPU',
     #'mpi_pe4': '4 GPU',
     #'mpi_pe8': '8 GPU',
-    #'pe1_new': 'GPU (H100)',
+    'pe1_new': 'GPU (H100) v1',
     #'pe1_new': 'GPU (serial k)',
-    'pe1_new': 'xH100',
+    #'pe1_new': 'xH100',
     'pe2_new': 'xH100 ×2',
     'pe4_new': 'xH100 ×4',
     'pe8_new': 'xH100 ×8',
-    'pe1_v2': 'GPU (H100)',
+    'pe1_v2': 'GPU (H100) v2',
     'pe2_v2': 'H100 ×2',
     'pe4_v2': 'H100 ×4',
     'pe8_v2': 'H100 ×8',
@@ -70,6 +76,19 @@ legend_labels = {
     'gaea_1s': 'CPU (Milan 64c)',
     'ursa_1s': 'CPU (Genoa 96c)',
     'ursa_2s': 'CPU (Genoa 96c x2)',
+    # BLAAAA
+    'tiling': 'tiling',
+    'pe1_20260327': 'GPU (GH200) 2026-03-27',
+    'pe1_20260420': 'GPU (GH200) 2026-04-20',
+    'gaea_gfdl': 'CPU (dev/gfdl)',
+    'gaea_ref': 'CPU (ref)',
+    'gaea_tiling': 'CPU (tiling)',
+    'ursa_1s_tiled': 'CPU (Genoa 96c) tiled',
+    'ursa_1s_gfdl': 'CPU (Genoa 96c) dev/gfdl',
+    'pe1_merge': 'dev/gfdl merge',
+    'pe1_merge_v2': 'dev/gfdl merge v2',
+    'pe1_merge_vert_noexit': 'dev/gfdl no exit',
+    'pe1_merge_jki': 'dev/gfdl merge jki',
 }
 
 
@@ -213,19 +232,20 @@ def plot_results(platforms, regions, stats, output):
             ax.set_title(reg, color=ctxt)
 
             # Explicit log ticks
-            ax.set_xscale('log')
-            ax.xaxis.set_major_locator(mticker.FixedLocator(nx))
-            ax.xaxis.set_minor_locator(mticker.NullLocator())
-            ax.set_xticklabels([f"{nx}x" for nx in nx_keys], rotation=45)
+            if (use_log_plot):
+                ax.set_xscale('log')
+                ax.xaxis.set_major_locator(mticker.FixedLocator(nx))
+                ax.xaxis.set_minor_locator(mticker.NullLocator())
+                ax.set_xticklabels([f"{nx}x" for nx in nx_keys], rotation=45)
 
-            ax.set_yscale('log')
-            ax.yaxis.set_major_formatter(
-                mticker.FuncFormatter(lambda v, pos: f"{v:g}")
-            )
-            ax.yaxis.set_major_locator(
-                mticker.LogLocator(base=10, subs=(1.0, 2.0, 5.0))
-            )
-            ax.yaxis.set_minor_locator(mticker.NullLocator())
+                ax.set_yscale('log')
+                ax.yaxis.set_major_formatter(
+                    mticker.FuncFormatter(lambda v, pos: f"{v:g}")
+                )
+                ax.yaxis.set_major_locator(
+                    mticker.LogLocator(base=10, subs=(1.0, 2.0, 5.0))
+                )
+                ax.yaxis.set_minor_locator(mticker.NullLocator())
 
             ax.tick_params(colors=ctxt)
 
@@ -235,8 +255,9 @@ def plot_results(platforms, regions, stats, output):
                 ax.fill_between(nx, tmin / hits, tmax / hits,
                                 alpha=0.15, linewidth=0)
 
-            line, = ax.plot(nx, tavg / hits, '-',
-                            label=legend_labels[expt])
+            label = legend_labels[expt] if expt in legend_labels else expt
+
+            line, = ax.plot(nx, tavg / hits, '-', label=label)
 
             col = line.get_color()
 
@@ -244,7 +265,6 @@ def plot_results(platforms, regions, stats, output):
 
             #if reg in plt_yrange:
             #    ax.set_ylim(plt_yrange[reg])
-
 
     #axes[1,2].set_ylim([0.0, 0.008])
 
@@ -256,8 +276,8 @@ def plot_results(platforms, regions, stats, output):
 
     axes[0, 0].legend()
 
-    #plt.show()
-    plt.savefig(output)
+    plt.show()
+    #plt.savefig(output)
 
 
 def main():
