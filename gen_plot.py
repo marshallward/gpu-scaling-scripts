@@ -12,7 +12,7 @@ CPU_cores = 96
 #CPU_cores = 0
 force_origin = False
 dark_bg = False
-use_log_plot = False
+use_log_plot = True
 
 
 # Standard modules
@@ -243,7 +243,7 @@ def plot_results(platforms, regions, stats, output):
                     mticker.FuncFormatter(lambda v, pos: f"{v:g}")
                 )
                 ax.yaxis.set_major_locator(
-                    mticker.LogLocator(base=10, subs=(1.0, 2.0, 5.0))
+                    mticker.LogLocator(base=2)
                 )
                 ax.yaxis.set_minor_locator(mticker.NullLocator())
 
