@@ -13,7 +13,7 @@ CPU_cores = 96
 #CPU_cores = 64
 #CPU_cores = 0
 force_origin = False
-dark_bg = True
+dark_bg = False
 use_log_plot = True
 
 
