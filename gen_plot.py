@@ -4,15 +4,17 @@ import os
 import sys
 
 import argparse
+import csv
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
 CPU_cores = 96
+#CPU_cores = 64
 #CPU_cores = 0
 force_origin = False
-dark_bg = False
-use_log_plot = False
+dark_bg = True
+use_log_plot = True
 
 
 # Standard modules
@@ -38,58 +40,6 @@ regions = [
 #    '(Ocean pressure force)',
 #    '(Ocean vertical viscosity)',
 #]
-
-
-# TODO: Better as command line inputs?
-legend_labels = {
-    'h100': 'H100',
-    'a100': 'A100',
-    'gh200': 'GH200',
-    'gh200_v2': 'GH200',
-
-    'cpu_m': 'CPU (MW)',
-    'cpu_u': 'CPU (UW)',
-    'cpu_0': 'CPU (ref)',
-    'bbl_cpu': 'CPU (BBL PR)',
-    'bbl_gpu': 'GPU (BBL PR)',
-    #'mpi_pe1': '1 GPU',
-    #'mpi_pe2': '2 GPU',
-    #'mpi_pe4': '4 GPU',
-    #'mpi_pe8': '8 GPU',
-    'pe1_new': 'GPU (H100) v1',
-    #'pe1_new': 'GPU (serial k)',
-    #'pe1_new': 'xH100',
-    'pe2_new': 'xH100 ×2',
-    'pe4_new': 'xH100 ×4',
-    'pe8_new': 'xH100 ×8',
-    'pe1_v2': 'GPU (H100) v2',
-    'pe2_v2': 'H100 ×2',
-    'pe4_v2': 'H100 ×4',
-    'pe8_v2': 'H100 ×8',
-    #
-    'pe1_vvlim': 'H100 + vvlim',
-    #'h100': 'nvhpc 25.11',
-    'nv26p1': 'nvhpc 26.1',
-    #'cor_k': 'CorAdCalc v2',
-    'cor_k': 'GPU (k teams)',
-    'gaea_2s': 'CPU (Milan 64c x2)',
-    'gaea_1s': 'CPU (Milan 64c)',
-    'ursa_1s': 'CPU (Genoa 96c)',
-    'ursa_2s': 'CPU (Genoa 96c x2)',
-    # BLAAAA
-    'tiling': 'tiling',
-    'pe1_20260327': 'GPU (GH200) 2026-03-27',
-    'pe1_20260420': 'GPU (GH200) 2026-04-20',
-    'gaea_gfdl': 'CPU (dev/gfdl)',
-    'gaea_ref': 'CPU (ref)',
-    'gaea_tiling': 'CPU (tiling)',
-    'ursa_1s_tiled': 'CPU (Genoa 96c) tiled',
-    'ursa_1s_gfdl': 'CPU (Genoa 96c) dev/gfdl',
-    'pe1_merge': 'dev/gfdl merge',
-    'pe1_merge_v2': 'dev/gfdl merge v2',
-    'pe1_merge_vert_noexit': 'dev/gfdl no exit',
-    'pe1_merge_jki': 'dev/gfdl merge jki',
-}
 
 
 # Custom ranges
@@ -183,7 +133,7 @@ def get_stats(platforms):
     return stats
 
 
-def plot_results(platforms, regions, stats, output):
+def plot_results(platforms, regions, stats, output, legend_labels):
     nplot = len(regions)
     nrow, ncol = square_pad(nplot)
 
@@ -243,7 +193,8 @@ def plot_results(platforms, regions, stats, output):
                     mticker.FuncFormatter(lambda v, pos: f"{v:g}")
                 )
                 ax.yaxis.set_major_locator(
-                    mticker.LogLocator(base=10, subs=(1.0, 2.0, 5.0))
+                    #mticker.LogLocator(base=10, subs=(1.0, 2.0, 5.0))
+                    mticker.LogLocator(base=2)
                 )
                 ax.yaxis.set_minor_locator(mticker.NullLocator())
 
@@ -284,12 +235,21 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('platforms', nargs='+', help='Platform directories, e.g. a100 h100')
     p.add_argument('-o', '--output', default='out.svg', metavar='FILE', help='output filename')
+    p.add_argument(
+        '-l', '--label', default='', metavar='LABEL[,LABEL...]',
+        help='comma-separated legend labels, matched to platform order'
+    )
     args = p.parse_args()
 
     platforms = [os.path.basename(os.path.normpath(p)) for p in args.platforms]
+    labels = next(csv.reader([args.label])) if args.label else []
+    if len(labels) > len(platforms):
+        p.error('more labels provided than platform directories')
+
+    legend_labels = dict(zip(platforms, labels))
 
     stats = get_stats(platforms)
-    plot_results(platforms, regions, stats, args.output)
+    plot_results(platforms, regions, stats, args.output, legend_labels)
 
 
 if __name__ == '__main__':
