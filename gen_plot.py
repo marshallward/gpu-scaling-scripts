@@ -9,9 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-CPU_cores = 96
+#CPU_cores = 96
 #CPU_cores = 64
-#CPU_cores = 0
+CPU_cores = 0
 force_origin = False
 dark_bg = False
 use_log_plot = True
@@ -19,15 +19,15 @@ use_log_plot = True
 
 # Standard modules
 regions = [
-    '(Ocean Coriolis & mom advection)',
-    '(Ocean barotropic mode stepping)',
-    '(Ocean continuity equation)',
-    '(Ocean horizontal viscosity)',
-    '(Ocean pressure force)',
-    '(Ocean vertical viscosity)',
+    #'(Ocean Coriolis & mom advection)',
+    #'(Ocean barotropic mode stepping)',
+    #'(Ocean continuity equation)',
+    #'(Ocean horizontal viscosity)',
+    #'(Ocean pressure force)',
+    #'(Ocean vertical viscosity)',
     #
-    #'Ocean dynamics',
-    #'Main loop',
+    'Ocean dynamics',
+    'Main loop',
     #'Ocean Other',
 ]
 
@@ -133,9 +133,10 @@ def get_stats(platforms):
     return stats
 
 
-def plot_results(platforms, regions, stats, output, legend_labels):
+def plot_results(platforms, regions, stats, output, legend_labels, yrange, shared_yrange):
     nplot = len(regions)
     nrow, ncol = square_pad(nplot)
+    yvalues = []
 
     # Plot results
     fig, axes = plt.subplots(nrow, ncol, figsize=(12, 7), squeeze=False,
@@ -214,8 +215,12 @@ def plot_results(platforms, regions, stats, output, legend_labels):
 
             ax.plot(nx, tavg / hits, 'o', color=col)
 
-            #if reg in plt_yrange:
-            #    ax.set_ylim(plt_yrange[reg])
+            yvalues.extend(tmin / hits)
+            yvalues.extend(tmax / hits)
+            yvalues.extend(tavg / hits)
+
+            if not yrange and not shared_yrange and reg in plt_yrange:
+                ax.set_ylim(plt_yrange[reg])
 
     #axes[1,2].set_ylim([0.0, 0.008])
 
@@ -225,6 +230,15 @@ def plot_results(platforms, regions, stats, output, legend_labels):
         for ax in axes.flat:
             ax.set_ylim([0, None])
 
+    if yrange:
+        for ax in axes.flat:
+            ax.set_ylim(yrange)
+    elif shared_yrange and yvalues:
+        ymin = min(y for y in yvalues if y > 0) if use_log_plot else min(yvalues)
+        ymax = max(yvalues)
+        for ax in axes.flat:
+            ax.set_ylim(ymin, ymax)
+
     axes[0, 0].legend()
 
     plt.show()
@@ -232,6 +246,8 @@ def plot_results(platforms, regions, stats, output, legend_labels):
 
 
 def main():
+    global dark_bg
+
     p = argparse.ArgumentParser()
     p.add_argument('platforms', nargs='+', help='Platform directories, e.g. a100 h100')
     p.add_argument('-o', '--output', default='out.svg', metavar='FILE', help='output filename')
@@ -239,7 +255,21 @@ def main():
         '-l', '--label', default='', metavar='LABEL[,LABEL...]',
         help='comma-separated legend labels, matched to platform order'
     )
+    p.add_argument(
+        '-y', '--yrange', default='', metavar='MIN,MAX',
+        help='fixed y-axis range for all plots, e.g. 0.1,100'
+    )
+    p.add_argument(
+        '--shared-yrange', action='store_true',
+        help='use one computed y-axis range for all plots'
+    )
+    p.add_argument(
+        '--dark', action='store_true',
+        help='use dark-background plot text colors'
+    )
     args = p.parse_args()
+
+    dark_bg = args.dark
 
     platforms = [os.path.basename(os.path.normpath(p)) for p in args.platforms]
     labels = next(csv.reader([args.label])) if args.label else []
@@ -248,8 +278,16 @@ def main():
 
     legend_labels = dict(zip(platforms, labels))
 
+    yrange = None
+    if args.yrange:
+        yrange = [float(v) for v in next(csv.reader([args.yrange]))]
+        if len(yrange) != 2:
+            p.error('--yrange must have exactly two values: MIN,MAX')
+        if use_log_plot and yrange[0] <= 0:
+            p.error('--yrange MIN must be positive for log plots')
+
     stats = get_stats(platforms)
-    plot_results(platforms, regions, stats, args.output, legend_labels)
+    plot_results(platforms, regions, stats, args.output, legend_labels, yrange, args.shared_yrange)
 
 
 if __name__ == '__main__':
