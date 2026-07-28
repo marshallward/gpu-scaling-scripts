@@ -9,9 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-#CPU_cores = 96
+CPU_cores = 96
 #CPU_cores = 64
-CPU_cores = 0
+#CPU_cores = 0
 force_origin = False
 dark_bg = False
 use_log_plot = True
@@ -133,13 +133,51 @@ def get_stats(platforms):
     return stats
 
 
-def plot_results(platforms, regions, stats, output, legend_labels, yrange, shared_yrange):
+def add_cpu_arrows(ax, color):
+    x_cpu = ax.transAxes.inverted().transform(
+        ax.transData.transform((CPU_cores, ax.get_ylim()[0]))
+    )[0]
+    x_cpu = min(max(x_cpu, 0.05), 0.95)
+
+    left_x = 0.04
+    right_x = 0.96
+    left_y = 0.65
+    right_y = 0.12
+
+    ax.annotate(
+        '',
+        xy=(left_x, left_y), xycoords='axes fraction',
+        xytext=(x_cpu, left_y), textcoords='axes fraction',
+        arrowprops={'arrowstyle': '<->', 'color': color, 'linewidth': 0.8},
+        annotation_clip=False,
+    )
+    ax.text(
+        (left_x + x_cpu) / 2, left_y, 'weak CPU scaling',
+        transform=ax.transAxes, color=color, ha='center', va='center',
+        fontsize='small', backgroundcolor=ax.get_facecolor(),
+    )
+
+    ax.annotate(
+        '',
+        xy=(right_x, right_y), xycoords='axes fraction',
+        xytext=(x_cpu, right_y), textcoords='axes fraction',
+        arrowprops={'arrowstyle': '<->', 'color': color, 'linewidth': 0.8},
+        annotation_clip=False,
+    )
+    ax.text(
+        (x_cpu + right_x) / 2, right_y, 'fixed CPUs',
+        transform=ax.transAxes, color=color, ha='center', va='center',
+        fontsize='small', backgroundcolor=ax.get_facecolor(),
+    )
+
+
+def plot_results(platforms, regions, stats, output, legend_labels, yrange, shared_yrange, figsize, cpu_arrows):
     nplot = len(regions)
     nrow, ncol = square_pad(nplot)
     yvalues = []
 
     # Plot results
-    fig, axes = plt.subplots(nrow, ncol, figsize=(12, 7), squeeze=False,
+    fig, axes = plt.subplots(nrow, ncol, figsize=figsize, squeeze=False,
     #fig, axes = plt.subplots(nrow, ncol, figsize=(8, 4), squeeze=False,
             constrained_layout=True)
 
@@ -239,6 +277,10 @@ def plot_results(platforms, regions, stats, output, legend_labels, yrange, share
         for ax in axes.flat:
             ax.set_ylim(ymin, ymax)
 
+    if CPU_cores > 0 and cpu_arrows:
+        for ax in axes.flat:
+            add_cpu_arrows(ax, plt.cm.tab10.colors[0])
+
     axes[0, 0].legend()
 
     plt.show()
@@ -267,6 +309,14 @@ def main():
         '--dark', action='store_true',
         help='use dark-background plot text colors'
     )
+    p.add_argument(
+        '--figsize', default='12,6', metavar='WIDTH,HEIGHT',
+        help='figure size in inches, e.g. 14,8'
+    )
+    p.add_argument(
+        '--cpu-arrows', action='store_true',
+        help='add weak/fixed CPU scaling arrows around the CPU dashed line'
+    )
     args = p.parse_args()
 
     dark_bg = args.dark
@@ -278,6 +328,10 @@ def main():
 
     legend_labels = dict(zip(platforms, labels))
 
+    figsize = [float(v) for v in next(csv.reader([args.figsize]))]
+    if len(figsize) != 2:
+        p.error('--figsize must have exactly two values: WIDTH,HEIGHT')
+
     yrange = None
     if args.yrange:
         yrange = [float(v) for v in next(csv.reader([args.yrange]))]
@@ -287,7 +341,7 @@ def main():
             p.error('--yrange MIN must be positive for log plots')
 
     stats = get_stats(platforms)
-    plot_results(platforms, regions, stats, args.output, legend_labels, yrange, args.shared_yrange)
+    plot_results(platforms, regions, stats, args.output, legend_labels, yrange, args.shared_yrange, figsize, args.cpu_arrows)
 
 
 if __name__ == '__main__':
