@@ -56,7 +56,7 @@ regions = [
     #'(Ocean continuity equation)',
     #'(Ocean pressure force)',
     #'(Ocean vertical viscosity)',
-    '(Ocean message passing)',
+    #'(Ocean message passing)',
 ]
 
 
@@ -165,6 +165,13 @@ def perfect_scaling_values(quantity, px, y0):
     raise ValueError(f"unknown quantity: {quantity}")
 
 
+def scaling_reference(quantity, px, y0, weak):
+    if weak and quantity in ('speedup', 'efficiency'):
+        return np.ones_like(np.array(px), dtype=float), 'ideal weak scaling'
+
+    return perfect_scaling_values(quantity, px, y0), 'ideal scaling'
+
+
 def offset_scaling_guide(quantity, guide, results):
     if quantity == 'efficiency':
         return guide
@@ -260,14 +267,18 @@ def filtered_configs(configs, selected_configs, min_config):
     return sorted(configs, key=config_value)
 
 
-def apply_axes_style(ax, xticks, xticklabels, ctxt, linear_y, quantity='time'):
+def apply_axes_style(ax, xticks, xticklabels, ctxt, linear_y, quantity='time', weak=False):
     if use_log_plot:
         ax.set_xscale('log')
         ax.xaxis.set_major_locator(mticker.FixedLocator(xticks))
         ax.xaxis.set_minor_locator(mticker.NullLocator())
         ax.set_xticklabels(xticklabels)
 
-        if quantity == 'efficiency':
+        if weak and quantity == 'speedup':
+            ax.set_yscale('linear')
+            ax.set_ylim(0, 1.2)
+            ax.yaxis.set_major_locator(mticker.FixedLocator([0, 0.25, 0.5, 0.75, 1.0, 1.2]))
+        elif quantity == 'efficiency':
             ax.set_ylim(0, 1.2)
             ax.yaxis.set_major_locator(mticker.FixedLocator([0, 0.25, 0.5, 0.75, 1.0, 1.2]))
         elif not linear_y:
@@ -302,7 +313,7 @@ def make_figure(nplot, figsize):
     return fig, axes, ctxt
 
 
-def plot_by_p(platforms, regions, stats, output, legend_labels, platform_labels, selected_configs, min_config, quantity, linear_y, figsize):
+def plot_by_p(platforms, regions, stats, output, legend_labels, platform_labels, selected_configs, min_config, quantity, linear_y, figsize, weak):
     nplot = len(regions)
     platforms = sort_by_p(platforms)
     px = [p_value(expt) for expt in platforms]
@@ -377,7 +388,7 @@ def plot_by_p(platforms, regions, stats, output, legend_labels, platform_labels,
 
         ax.set_title('Dycore speedup vs number of GPUs', color=ctxt)
         xlabels = [f"{p}" for p in px]
-        apply_axes_style(ax, px, xlabels, ctxt, linear_y or iplot > 0, quantity)
+        apply_axes_style(ax, px, xlabels, ctxt, linear_y or iplot > 0, quantity, weak)
 
         scaling_ref = None
         results = []
@@ -414,8 +425,9 @@ def plot_by_p(platforms, regions, stats, output, legend_labels, platform_labels,
             ax.plot(px, yavg, 'o', color=col)
 
         if iplot == 0:
-            perfect = perfect_scaling_values(quantity, px, scaling_ref)
-            ax.plot(px, perfect, '--', color='k', alpha=0.6, label='perfect scaling')
+            perfect_y0 = 1.0 if quantity in ('speedup', 'efficiency') else scaling_ref
+            perfect, perfect_label = scaling_reference(quantity, px, perfect_y0, weak)
+            ax.plot(px, perfect, '--', color='k', alpha=0.6, label=perfect_label)
 
         #if reg in plt_yrange:
         #    ax.set_ylim(plt_yrange[reg])
@@ -547,6 +559,10 @@ def main():
         '--order', choices=('p', 'config'), default='p',
         help='plot order: p plots fixed configs across p directories; config plots directories across configs'
     )
+    p.add_argument(
+        '--weak', action='store_true',
+        help='use weak-scaling reference line'
+    )
     args = p.parse_args()
 
     dark_bg = args.dark
@@ -581,7 +597,7 @@ def main():
     try:
         stats = get_stats(platforms)
         if args.order == 'p':
-            plot_by_p(platforms, regions, stats, args.output, legend_labels, platform_labels, selected_configs, min_config, args.quantity, args.linear_y, figsize)
+            plot_by_p(platforms, regions, stats, args.output, legend_labels, platform_labels, selected_configs, min_config, args.quantity, args.linear_y, figsize, args.weak)
         else:
             plot_by_config(platforms, regions, stats, args.output, legend_labels, selected_configs, min_config, args.quantity, args.linear_y, figsize)
     except ValueError as err:

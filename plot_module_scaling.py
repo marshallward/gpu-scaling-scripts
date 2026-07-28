@@ -168,9 +168,9 @@ def perfect_scaling_values(quantity, px, y0):
 
 def scaling_reference(quantity, px, y0, weak):
     if weak and quantity in ('speedup', 'efficiency'):
-        return np.ones_like(np.array(px), dtype=float), 'perfect weak scaling'
+        return np.ones_like(np.array(px), dtype=float), 'ideal weak scaling'
 
-    return perfect_scaling_values(quantity, px, y0), 'perfect scaling'
+    return perfect_scaling_values(quantity, px, y0), 'ideal scaling'
 
 
 def offset_scaling_guide(quantity, guide, results):
@@ -256,7 +256,7 @@ def get_stats(platforms):
     return stats
 
 
-def plot_results(platforms, regions, stats, output, legend_labels, platform_labels, selected_configs, min_config, quantity, linear_y, figsize, weak):
+def plot_results(platforms, regions, stats, output, legend_labels, platform_labels, selected_configs, min_config, quantity, linear_y, figsize, weak, ylim):
     nplot = len(regions)
     nrow, ncol = square_pad(nplot)
 
@@ -386,6 +386,10 @@ def plot_results(platforms, regions, stats, output, legend_labels, platform_labe
         for ax in axes.flat:
             ax.set_ylim([0, None])
 
+    if ylim:
+        for ax in axes.flat:
+            ax.set_ylim(ylim)
+
     axes[0, 0].legend()
 
     plt.show()
@@ -434,6 +438,10 @@ def main():
         '--weak', action='store_true',
         help='use weak-scaling reference line'
     )
+    p.add_argument(
+        '--ylim', default='', metavar='MIN,MAX',
+        help='y-axis limits applied to all plots, e.g. 0,1.2'
+    )
     args = p.parse_args()
 
     dark_bg = args.dark
@@ -446,6 +454,9 @@ def main():
     figsize = [float(v) for v in next(csv.reader([args.figsize]))]
     if len(figsize) != 2:
         p.error('--figsize must have exactly two values: WIDTH,HEIGHT')
+    ylim = [float(v) for v in next(csv.reader([args.ylim]))] if args.ylim else None
+    if ylim and len(ylim) != 2:
+        p.error('--ylim must have exactly two values: MIN,MAX')
     sorted_platforms = sorted(platforms, key=p_value)
     if len(platform_label_values) > len(sorted_platforms):
         p.error('more platform labels provided than platform directories')
@@ -459,7 +470,7 @@ def main():
 
     try:
         stats = get_stats(platforms)
-        plot_results(platforms, regions, stats, args.output, legend_labels, platform_labels, selected_configs, min_config, args.quantity, args.linear_y, figsize, args.weak)
+        plot_results(platforms, regions, stats, args.output, legend_labels, platform_labels, selected_configs, min_config, args.quantity, args.linear_y, figsize, args.weak, ylim)
     except ValueError as err:
         p.error(str(err))
 
